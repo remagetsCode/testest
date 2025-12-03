@@ -3,7 +3,7 @@ import flixel.math.FlxMath;
 import funkin.options.OptionsMenu;
 import funkin.editors.EditorPicker;
 
-var maxRadius:Float = 20;
+var maxRadius:Float = 30;
 
 var buttons:Array<FlxSprite>=[];
 
@@ -212,7 +212,7 @@ function eyesShit() {
     if (dist > maxRadius) {
         var angle = Math.atan2(dy, dx);
         dx = Math.cos(angle) * maxRadius;
-        dy = Math.sin(angle) * maxRadius;
+        dy = Math.sin(angle) * (maxRadius*1.5);
     }
 
     var targetX = centerX + dx - eyes.width/2;

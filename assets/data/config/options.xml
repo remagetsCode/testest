@@ -1,0 +1,4 @@
+<menu name="Reignited Options" desc="Do whatever you want.">
+    <checkbox id="airShaders" name="Shaders" desc="Enable/Disable shaders. If disabled may improve the performance, but there'll be less visual effects and details."/>
+    <checkbox id="airMinimal" name="Minimal" desc="Enable/Disable shaders. If disabled may improve the performance, but there'll be less visual effects and details."/>
+</menu>

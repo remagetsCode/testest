@@ -31,6 +31,23 @@ var heat1 = new CustomShader('heatwave1');
 heat1.intensity = 0.0;
 heat1.v_comp = 30.0;
 
+if(FlxG.save.data.airMinimal) {
+    function onStageNodeParsed() {
+        for(e in members) 
+            remove(e);
+    }
+    function postCreate() {
+        healthBar.visible = false;
+        healthBarBG.visible = false;
+        iconP1.visible = false;
+        iconP2.visible = false;
+        accuracyTxt.visible = false;
+        missesTxt.visible = false;
+        scoreTxt.visible = false;
+    }
+    //return;
+}
+else {
 function create() {
     introLength = 0.05;
 
@@ -324,4 +341,5 @@ function freakyTitle() {
 
 function destroy(){
     FlxG.game.setFilters([]);   // To wipe all the shaders from the game camera
+}
 }
