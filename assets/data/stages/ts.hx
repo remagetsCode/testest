@@ -202,6 +202,7 @@ function beatHit(b:Int) {
 
             if (Options.quality == 1) for (e in [tailsHeadFire, knuxFire, eggmanFire, tailFire]) e.alpha = 1;
             if (Options.quality == 1) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
+            Options.ghostTapping = true;
 
 		case 256:
 			pollo.alpha = 1;
@@ -213,7 +214,9 @@ function beatHit(b:Int) {
 			alvin.animation.play('idle');
 			new FlxTimer().start(3.5, ()->{remove(alvin); alvin.destroy();});
 
-        case 282: allHud(1, 1);
+        case 282: 
+            allHud(1, 1);
+            Options.ghostTapping = false;
         case 412:
             window.title = "I'm gonna getcha";
             allHud(0, 1.5);
@@ -234,7 +237,11 @@ function beatHit(b:Int) {
             FlxTween.num(0, 0.005, 20, {onUpdate: (twn) -> rgbShader = twn.value});
             noteCam.shake(0.0025, 39);
             modulo = 1;
-        case 612: FlxTween.num(5, 7, 1, {onUpdate: (v)->shaderVel = v.value});
+            for(strum in cpuStrums) strum.scrollSpeed = 5;
+        case 612: 
+            FlxTween.num(5, 7, 1, {onUpdate: (v)->shaderVel = v.value});
+            for(strum in cpuStrums) strum.scrollSpeed = 7;
+        case 676: for(strum in cpuStrums) strum.scrollSpeed = 10;
 
 		case 706: for (e in [camGame, camHUD, noteCam]) e.shake(0.005, 5);
         case 708: FlxTween.num(0.005, 0, 5, {onUpdate: (twn) -> rgbShader = twn.value});
