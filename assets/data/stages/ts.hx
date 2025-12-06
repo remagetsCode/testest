@@ -1,4 +1,5 @@
 import hxvlc.flixel.FlxVideoSprite;
+import reignited.DropShadow;
 using StringTools;
 
 var jumpscare:FlxSprite;
@@ -22,9 +23,10 @@ playCutscenes = true;
 var canBump:Bool = true;
 var shittingYourself:Bool = false;
 
-var fireLight:CustomShader = new CustomShader('firelight');
+//var fireLight:CustomShader = new CustomShader('firelight');
 var theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan:CustomShader = new CustomShader('chromaticAberration');
 var rgbShader:Float = 0;
+var dropShadowEffects:Array<DropShadow> = [];
 
 FlxG.game.setFilters([]);   // To wipe all the shaders from the game camera
 var heat1 = new CustomShader('heatwave1');
@@ -145,6 +147,8 @@ function update(elapsed:Float) {
 	
 	extraCam.scroll.x = (shittingYourself ? FlxG.random.float(-20, 20) : 0);
 	extraCam.scroll.y = (shittingYourself ? FlxG.random.float(-20, 20) : 0);
+
+    
 }
 
 function postUpdate(){
@@ -160,7 +164,7 @@ function postUpdate(){
         else if (animName.startsWith("singRIGHT")) theFuckingMovement(25, 0, -0.25);
     }
 
-    if (fireLight != null) fireLight.iTime = Conductor.songPosition / 1000;
+    //if (fireLight != null) fireLight.iTime = Conductor.songPosition / 1000;
 
     if (Conductor.curBeat > 128 && Conductor.curBeat < 412 || Conductor.curBeat > 452 && Conductor.curBeat < 706) {
         if (curCameraTarget == 2) defaultCamZoom = 0.5;
@@ -168,6 +172,16 @@ function postUpdate(){
     }
     if ((Conductor.curBeat > 156 && Conductor.curBeat < 411)) {
         freakyTitle();
+    }
+
+    if(Conductor.curBeat > 252) {
+        for(c in [bf, dad, gf]) {
+            if(c.shader == null){
+                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 120 : 90, 25, 1, c == dad ? 0.05 : 0.2, 37, 10, 20, 5, 2, 1, false, false, false);
+                dropShadowEffects.push(c);
+            }
+        }
+        for(c in dropShadowEffects) c?.postUpdate(Conductor.songPosition / 1000);
     }
 }
 
@@ -201,8 +215,9 @@ function beatHit(b:Int) {
             }
 
             if (Options.quality == 1) for (e in [tailsHeadFire, knuxFire, eggmanFire, tailFire]) e.alpha = 1;
-            if (Options.quality == 1) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
+            //if (Options.quality == 1) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
             Options.ghostTapping = true;
+
 
 		case 256:
 			pollo.alpha = 1;
