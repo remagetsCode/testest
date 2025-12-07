@@ -1,4 +1,5 @@
 import hxvlc.flixel.FlxVideoSprite;
+import flixel.math.FlxAngle;
 import reignited.DropShadow;
 using StringTools;
 
@@ -23,7 +24,7 @@ playCutscenes = true;
 var canBump:Bool = true;
 var shittingYourself:Bool = false;
 
-//var fireLight:CustomShader = new CustomShader('firelight');
+var fireLight:CustomShader = new CustomShader('firelight');
 var theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan:CustomShader = new CustomShader('chromaticAberration');
 var rgbShader:Float = 0;
 var dropShadowEffects:Array<DropShadow> = [];
@@ -71,10 +72,10 @@ function create() {
 function postCreate() {
     Options.ghostTapping = false;
 
-    if (Options.quality == 1){
-        add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
-        fuckingIntro.camera = extraCam;
-    }
+    //if (Options.quality == 1){
+    //    add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
+    //    fuckingIntro.camera = extraCam;
+    //}
 
     jumpscare = new FlxSprite();
     jumpscare.frames = Paths.getFrames('stages/sonic/jumpscare');
@@ -164,7 +165,7 @@ function postUpdate(){
         else if (animName.startsWith("singRIGHT")) theFuckingMovement(25, 0, -0.25);
     }
 
-    //if (fireLight != null) fireLight.iTime = Conductor.songPosition / 1000;
+    if (fireLight != null) fireLight.iTime = Conductor.songPosition / 1000;
 
     if (Conductor.curBeat > 128 && Conductor.curBeat < 412 || Conductor.curBeat > 452 && Conductor.curBeat < 706) {
         if (curCameraTarget == 2) defaultCamZoom = 0.5;
@@ -177,12 +178,13 @@ function postUpdate(){
     if(Conductor.curBeat > 252) {
         for(c in [bf, dad, gf]) {
             if(c.shader == null){
-                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 120 : 90, 25, 1, c == dad ? 0.05 : 0.2, 37, 10, 20, 5, 2, 1, false, false, false);
+                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 120 : 90, 25, 1, c == dad ? 0.05 : 0.2, c==dad?0:37, c==dad?0:10, c==dad?0:20, 5, 2, 1, false, false, false);
                 dropShadowEffects.push(c);
             }
         }
         for(c in dropShadowEffects) c?.postUpdate(Conductor.songPosition / 1000);
     }
+    noteCam.alpha = 1;
 }
 
 var modulo:Int = 2;     // Interval of beats the noteCam will bump
@@ -215,7 +217,7 @@ function beatHit(b:Int) {
             }
 
             if (Options.quality == 1) for (e in [tailsHeadFire, knuxFire, eggmanFire, tailFire]) e.alpha = 1;
-            //if (Options.quality == 1) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
+            if (Options.quality == 1) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
             Options.ghostTapping = true;
 
 

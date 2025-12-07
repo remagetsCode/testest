@@ -10,7 +10,7 @@ void main() {
     float glow = 0.0;
     
     float maxRadius = 12.0 / 512.0;
-    int samples = 16; // Ms samples = ms suave pero ms pesado
+    int samples = 2; // Ms samples = ms suave pero ms pesado
     
     for(int i = 0; i < samples; i++) {
         float angle = float(i) * 6.28318 / float(samples);
