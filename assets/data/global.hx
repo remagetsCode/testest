@@ -20,6 +20,7 @@ function new() {
     if (FlxG.save.data.ogTitle == null) FlxG.save.data.ogTitle = false;
     if (FlxG.save.data.cached == null) FlxG.save.data.cached = false;
     if (FlxG.save.data.canAdvice == null) FlxG.save.data.canAdvice = true;
+    if (FlxG.save.data.airMinimal == null) FlxG.save.data.airMinimal = false;
 
     var path = "mods";
     var maxTries = 3;

@@ -1,15 +1,14 @@
 <!DOCTYPE codename-engine-character>
 <character sprite="GF_assets" icon="gfsheet">
-	<anim name="idle" anim="gf sad"/>
 	<anim name="singDOWN" anim="GF Down Note"/>
 	<anim name="singRIGHT" anim="GF Right Note"/>
 	<anim name="singLEFT" anim="GF left note"/>
 	<anim name="singUP" anim="GF Up Note"/>
-	<anim name="gf sad" anim="gf sad"/>
-	<anim name="GF Cheer" anim="GF Cheer"/>
-	<anim name="GF FEAR " anim="GF FEAR "/>
+	<anim name="sad" anim="gf sad"/>
+	<anim name="cheer" anim="GF Cheer"/>
+	<anim name="scared" anim="GF FEAR "/>
 	<anim name="danceLeft" anim="GF Dancing Beat0" indices="0..14"/>
 	<anim name="danceRight" anim="GF Dancing Beat0" indices="15..30"/>
-	<anim name="GF Dancing Beat Hair blowing" anim="GF Dancing Beat Hair blowing"/>
-	<anim name="GF Dancing Beat Hair Landing" anim="GF Dancing Beat Hair Landing"/>
+	<anim name="hairBlow" anim="GF Dancing Beat Hair blowing"/>
+	<anim name="hairFall" anim="GF Dancing Beat Hair Landing"/>
 </character>
