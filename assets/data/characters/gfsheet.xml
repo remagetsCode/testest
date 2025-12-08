@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character sprite="GF_assets" icon="gfsheet">
+<character sprite="GF_assets" icon="gfsheet" camx="-270">
 	<anim name="singDOWN" anim="GF Down Note"/>
 	<anim name="singRIGHT" anim="GF Right Note"/>
 	<anim name="singLEFT" anim="GF left note"/>

@@ -1,4 +1,5 @@
 // Obtained from V-Slice, adapted by Remagets :]
+import flixel.math.FlxAngle;
 
 class DropShadow {
 /**
@@ -182,7 +183,8 @@ class DropShadow {
     }
 
     public function set_angle(ang:Float) {
-        attachedSprite.shader.ang = angle = ang;
+        angle = ang;
+        attachedSprite.shader.ang = FlxAngle.asRadians(angle);
         return ang;
     }
 

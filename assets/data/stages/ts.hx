@@ -178,11 +178,14 @@ function postUpdate(){
     if(Conductor.curBeat > 252) {
         for(c in [bf, dad, gf]) {
             if(c.shader == null){
-                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 120 : 90, 25, 1, c == dad ? 0.05 : 0.2, c==dad?0:37, c==dad?0:10, c==dad?0:20, 5, 2, 1, false, false, false);
+                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 80 : 110, 25, 1, c == dad ? 0.05 : 0.2, c==dad?30:37, c==dad?0:10, c==dad?30:20, 5, 2, 1, false, false, false);
                 dropShadowEffects.push(c);
             }
         }
-        for(c in dropShadowEffects) c?.postUpdate(Conductor.songPosition / 1000);
+        for(c in dropShadowEffects) {
+            c?.distance = lerp(c?.distance, FlxG.random.int(10, 30), 0.3);
+            c?.postUpdate(Conductor.songPosition / 1000);
+        }
     }
     noteCam.alpha = 1;
 }
