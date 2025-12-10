@@ -12,7 +12,7 @@ void main()
     
 
      //zoom in to avoid the edge clipping
-     float zoomIn = 0.01;
+     float zoomIn = 0.0001;
      uv = (zoomIn/2.0) + (uv * (1.0 - zoomIn));
      
      //customisation variables

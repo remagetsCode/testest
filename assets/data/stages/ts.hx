@@ -70,16 +70,10 @@ function create() {
 function postCreate() {
     Options.ghostTapping = false;
 
-<<<<<<< HEAD
     if (Options.quality != 0){
-       add(fuckingIntro = new FlxVideoSprite(-305, -160)).load(Paths.video('tooSlow'), [':no-audio']);
-       fuckingIntro.scale.set(0.65, 0.67);
+       add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
+       fuckingIntro.scale.set(0.7, 0.7);
        fuckingIntro.camera = extraCam;
-=======
-    if (Options.quality == 1){
-        add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
-        fuckingIntro.camera = extraCam;
->>>>>>> 4f4c9bc84a4933535c557b6f27f1ffb36b716c0a
     }
 
     jumpscare = new FlxSprite();
@@ -137,7 +131,7 @@ function postCreate() {
 
     if (Options.quality != 0) for (uh in [camGame, camHUD, noteCam]) {
         uh.addShader(theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan);
-        FlxG.game.addShader(heat1);
+        camGame.addShader(heat1);
     }
 }
 
