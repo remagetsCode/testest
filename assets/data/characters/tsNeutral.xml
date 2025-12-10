@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character x="-150" y="-150" scale="0.8" camy="50" icon="sonic" color="#002A97">
+<character sprite="ts/Neutral" x="-150" y="-150" scale="0.8" camy="50" icon="sonic" color="#002A97">
 	<anim name="idle" anim="idle" x="-16" y="-94" loop="true"/>
 	<anim name="singDOWN" anim="down" x="25" y="-279"/>
 	<anim name="singRIGHT" anim="right" x="-205" y="-85"/>

@@ -6,6 +6,7 @@ import funkin.editors.EditorPicker;
 var maxRadius:Float = 30;
 
 var buttons:Array<FlxSprite>=[];
+var boxes:Array<FlxSprite>=[];
 
 var back:FlxVideoSprite;
 var noHijo:FlxVideoSprite;
@@ -23,6 +24,7 @@ var credits:FlxSprite;
 var black:FlxSprite;
 
 var clicked:Bool = false;
+var curSelected:Int = 0;
 
 var shadCam:FlxCamera = new FlxCamera();
 var topCam:FlxCamera = new FlxCamera();
@@ -75,7 +77,7 @@ function create() {
 			case'credits':spr.y=580; spr.x-=30;
 		}
 		add(spr);
-		buttons.push(spr);
+		if (shit != 'freeplay') buttons.push(spr);
 	}
 
 	sonic = new FlxSprite(250, 120);
@@ -113,6 +115,8 @@ function create() {
 	add(options = new FlxSprite(950, 440).makeGraphic(309, 120, 0x00FFFFFF));
 	add(credits = new FlxSprite(920, 580).makeGraphic(355, 65, 0x00FFFFFF));
 
+	for (e in [story, options, credits]) boxes.push(e);
+
 	add(black = new FlxSprite().makeGraphic(1280, 720, 0xFF000000)).alpha = 0;
 	black.camera = topCam;
 
@@ -137,36 +141,36 @@ function update(elapsed:Float) {
 
 	if (!clicked){
 		eyesShit();
-		eyes.alpha = FlxG.random.float(0.7, 1);
-		if (FlxG.mouse.overlaps(story)){
-			buttons[0].animation.play('s');
-			if (FlxG.mouse.justPressed) storyClicked();
-		}else{
-			buttons[0].animation.play('i');
-		}
-		if (FlxG.mouse.overlaps(options)) {
-			buttons[2].animation.play('s');
-			if (FlxG.mouse.justPressed){
-				FlxG.sound.play(Paths.sound('menu/confirm'));
-				clicked = true;
-				buttons[2].animation.play('d');
-				FlxTween.tween(black, {alpha: 1}, 1.5, {ease: FlxEase.quartInOut, startDelay: 0.5});
-				new FlxTimer().start(2, ()->FlxG.switchState(new OptionsMenu()));
-			}
-		}else{
-			buttons[2].animation.play('i');
-		}
-		if (FlxG.mouse.overlaps(credits)) {
-			buttons[3].animation.play('s');
-			if (FlxG.mouse.justPressed){
-				FlxG.sound.play(Paths.sound('menu/confirm'));
-				clicked = true;
-				buttons[3].animation.play('d');
-				FlxTween.tween(black, {alpha: 1}, 1.5, {ease: FlxEase.quartInOut, startDelay: 0.5});
-				new FlxTimer().start(2, ()->FlxG.switchState(new ModState('creds')));
-			}
-		}else{
-			buttons[3].animation.play('i');
+
+		for (i in 0...buttons.length) buttons[i].animation.play('i');
+		
+		curSelected = -1;
+		
+		for (i in 0...boxes.length) {
+		    if (FlxG.mouse.overlaps(boxes[i])) {			
+		        buttons[i].animation.play('s');
+		        curSelected = i;
+			
+		        if (FlxG.mouse.justPressed) {
+				
+		            clicked = true;
+				
+		            switch (curSelected) {
+		                case 0: storyClicked();
+		                case 1, 2:
+		                    FlxG.sound.play(Paths.sound('menu/confirm'));
+		                    buttons[i].animation.play('d');
+		                    FlxTween.tween(black, {alpha: 1}, 1.5, {ease: FlxEase.quartInOut,startDelay: 0.5});
+						
+		                    new FlxTimer().start(2, () -> {
+		                        if (curSelected == 1) FlxG.switchState(new OptionsMenu());
+		                        else if (curSelected == 2) FlxG.switchState(new ModState('creds'));
+		                    });
+		            }
+		        }
+			
+		        break;
+		    }
 		}
 	}
 
@@ -175,10 +179,6 @@ function update(elapsed:Float) {
 		persistentDraw = true;
 		// openSubState(new ModSubState('fakeShit'));
 		openSubState(new EditorPicker());
-	}
-
-	if (FlxG.keys.justPressed.EIGHT){
-		FlxG.switchState(new ModState('creds'));
 	}
 }
 
@@ -191,18 +191,13 @@ function storyClicked() {
 	FlxTween.tween(eyes, {alpha: 0}, 0.5, {ease: FlxEase.quartInOut});
 	sonic.animation.play('accept');
 	new FlxTimer().start(3.5, ()->{
-	
-	switch(ogCheck){
-		case true: if (ogRand == 1) PlayState.loadSong('og', 'hard'); else PlayState.loadSong('too-slow', 'hard');
-		case false, null: PlayState.loadSong('too-slow', 'hard');
-	}		
-
+		PlayState.loadSong(FlxG.save.data.tooSlow && ogRand != 1 ? 'too-slow' : 'og', 'hard');
 		FlxG.switchState(new PlayState());
 	});
 }
 
 function eyesShit() {
-    var centerX = sonic.x + sonic.width/2 + 10;
+    var centerX = sonic.x + sonic.width/2;
     var centerY = sonic.y + sonic.height/2 - 70;
 
     var dx = FlxG.mouse.x - centerX;

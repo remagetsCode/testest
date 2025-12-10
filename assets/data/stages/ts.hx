@@ -1,5 +1,4 @@
 import hxvlc.flixel.FlxVideoSprite;
-import flixel.math.FlxAngle;
 import reignited.DropShadow;
 using StringTools;
 
@@ -29,7 +28,7 @@ var theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan:CustomShader = new C
 var rgbShader:Float = 0;
 var dropShadowEffects:Array<DropShadow> = [];
 
-FlxG.game.setFilters([]);   // To wipe all the shaders from the game camera
+FlxG.game.setFilters([]);
 var heat1 = new CustomShader('heatwave1');
 heat1.intensity = 0.0;
 heat1.v_comp = 30.0;
@@ -48,13 +47,12 @@ if(FlxG.save.data.airMinimal) {
         missesTxt.visible = false;
         scoreTxt.visible = false;
     }
-    //return;
 }
 else {
 function create() {
     introLength = 0.05;
 
-    if (Options.quality == 1) canPause = false;
+    if (Options.quality != 0) canPause = false;
 
     FlxG.cameras.add(noteCam = new HudCamera(), false).bgColor = 0;
     FlxG.cameras.add(extraCam = new FlxCamera(), false).bgColor = 0;
@@ -72,10 +70,11 @@ function create() {
 function postCreate() {
     Options.ghostTapping = false;
 
-    //if (Options.quality == 1){
-    //    add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
-    //    fuckingIntro.camera = extraCam;
-    //}
+    if (Options.quality != 0){
+       add(fuckingIntro = new FlxVideoSprite(-305, -160)).load(Paths.video('tooSlow'), [':no-audio']);
+       fuckingIntro.scale.set(0.65, 0.67);
+       fuckingIntro.camera = extraCam;
+    }
 
     jumpscare = new FlxSprite();
     jumpscare.frames = Paths.getFrames('stages/sonic/jumpscare');
@@ -130,7 +129,7 @@ function postCreate() {
         player.members[i].camera = noteCam;
     }
 
-    if (Options.quality == 1) for (uh in [camGame, camHUD, noteCam]) {
+    if (Options.quality != 0) for (uh in [camGame, camHUD, noteCam]) {
         uh.addShader(theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan);
         FlxG.game.addShader(heat1);
     }
@@ -147,9 +146,7 @@ function update(elapsed:Float) {
     theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan.greenOff = [-rgbShader, 0];
 	
 	extraCam.scroll.x = (shittingYourself ? FlxG.random.float(-20, 20) : 0);
-	extraCam.scroll.y = (shittingYourself ? FlxG.random.float(-20, 20) : 0);
-
-    
+	extraCam.scroll.y = (shittingYourself ? FlxG.random.float(-20, 20) : 0);    
 }
 
 function postUpdate(){
@@ -183,16 +180,15 @@ function postUpdate(){
             }
         }
         for(c in dropShadowEffects) {
-            c?.distance = lerp(c?.distance, FlxG.random.int(10, 30), 0.3);
+            c?.distance = CoolUtil.fpsLerp(c?.distance, FlxG.random.int(10, 30), 0.1);
             c?.postUpdate(Conductor.songPosition / 1000);
         }
     }
-    noteCam.alpha = 1;
 }
 
-var modulo:Int = 2;     // Interval of beats the noteCam will bump
+var modulo:Int = 2;
 function beatHit(b:Int) {
-    if (b % modulo == 0 && canBump) noteCam.zoom = (Options.downscroll ? 1.02 : 1.03);
+    if (b % modulo == 0 && canBump) noteCam.zoom = 1.02;
 
     switch (b) {
         case 1: for(n in holds) n.camera = noteCam;
@@ -219,8 +215,8 @@ function beatHit(b:Int) {
                 uh.alpha = 1;
             }
 
-            if (Options.quality == 1) for (e in [tailsHeadFire, knuxFire, eggmanFire, tailFire]) e.alpha = 1;
-            if (Options.quality == 1) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
+            if (Options.quality != 0) for (e in [tailsHeadFire, knuxFire, eggmanFire, tailFire]) e.alpha = 1;
+            if (Options.quality != 0) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
             Options.ghostTapping = true;
 
 
@@ -299,9 +295,9 @@ function destroy() Options.ghostTapping = true;
 
 function onSongStart() {
     noteCam.flash(0xFF000000, 5);
-    if (Options.quality == 1) fuckingIntro.play();
+    if (Options.quality != 0) fuckingIntro.play();
 
-    if (Options.quality == 1){
+    if (Options.quality != 0){
         new FlxTimer().start(21.5, () -> {
             canPause = true;
             FlxTween.tween(fuckingIntro, {alpha: 0}, 0.5, {ease: FlxEase.quartInOut, onComplete: () -> {
@@ -335,38 +331,38 @@ function wave() {
         player.members[i].y = 40;
     }
 
-    for (i in 0...4) FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
-    for (i in 0...4) FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
+    for (i in 0...4) {
+        FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
+        FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
+    }
 }
 
 function theFuckingMovement(x:Float, y:Float, angle:Float) {
 	camGame.targetOffset.set(x, y);
-	camGame.angle = FlxMath.lerp(camGame.angle, angle, camGame.followLerp * 25 / 15);
+	camGame.angle = CoolUtil.fpsLerp(camGame.angle, angle, camGame.followLerp * 25 / 15);
 }
 
 function simpleJumpscare() {
+	simpleJump.alpha = 1;
+    backJump.alpha = 1;
+    FlxG.sound.play(Paths.sound("softjump"), 0.6);
+    shittingYourself = true;
 
-		simpleJump.alpha = 1;
-    	backJump.alpha = 1;
-    	FlxG.sound.play(Paths.sound("softjump"), 0.6);
-    	shittingYourself = true;
-
-    	new FlxTimer().start(0.2, () -> {simpleJump.alpha = 0; backJump.alpha = 0; shittingYourself = false;});
-	}
-
+    new FlxTimer().start(0.2, () -> {simpleJump.alpha = 0; backJump.alpha = 0; shittingYourself = false;});
+}
 
 function freakyTitle() {
-    var chars = "I am god";
+    var chars:String = "I am god";
     
-    var newString = "";
+    var newString:String = "";
     for (i in 0...chars.length) {
-        var randIndex = FlxG.random.int(0, chars.length - 1);
+        var randIndex:Int = FlxG.random.int(0, chars.length - 1);
         newString += chars.charAt(randIndex);
     }
     window.title = newString;
 }
 
 function destroy(){
-    FlxG.game.setFilters([]);   // To wipe all the shaders from the game camera
+    FlxG.game.setFilters([]);
 }
 }

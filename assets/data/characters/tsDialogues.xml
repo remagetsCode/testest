@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character x="-150" y="-20" scale="0.85" camx="-100" camy="60" icon="sonic">
+<character sprite="ts/Dialogues" x="-150" y="-20" scale="0.85" camx="-100" camy="60" icon="sonic">
 	<anim name="dialogue" anim="dialogue" x="-61.72" y="17.34"/>
 	<anim name="tooslow" anim="tooslow" x="-50" y="-91"/>
 </character>

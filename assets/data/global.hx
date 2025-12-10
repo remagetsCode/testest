@@ -10,6 +10,7 @@ static var redirectStates:Map<FlxState, String> = [
 ];
 
 var chiyoPaths:Array<String>=CoolUtil.coolTextFile(Paths.txt('config/chiyoPaths'));
+public var winSuffix:String = '';
 
 // ye, ts js for uuuuuhhhhhhhhhh, the mod safety?????? ion fucking nou but ts cool asf
 function new() {
