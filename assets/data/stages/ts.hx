@@ -72,10 +72,10 @@ function create() {
 function postCreate() {
     Options.ghostTapping = false;
 
-    //if (Options.quality == 1){
-    //    add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
-    //    fuckingIntro.camera = extraCam;
-    //}
+    if (Options.quality == 1){
+        add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
+        fuckingIntro.camera = extraCam;
+    }
 
     jumpscare = new FlxSprite();
     jumpscare.frames = Paths.getFrames('stages/sonic/jumpscare');
@@ -178,7 +178,7 @@ function postUpdate(){
     if(Conductor.curBeat > 252) {
         for(c in [bf, dad, gf]) {
             if(c.shader == null){
-                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 80 : 110, 25, 1, c == dad ? 0.05 : 0.2, c==dad?30:37, c==dad?0:10, c==dad?30:20, 5, 2, 1, false, false, false);
+                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 80 : 110, 25, 1, c == dad ? 0.05 : 0.1, 37, c==dad?0:10, c==dad?25:20, 5, 2, 1, false, false, false);
                 dropShadowEffects.push(c);
             }
         }
@@ -187,7 +187,6 @@ function postUpdate(){
             c?.postUpdate(Conductor.songPosition / 1000);
         }
     }
-    noteCam.alpha = 1;
 }
 
 var modulo:Int = 2;     // Interval of beats the noteCam will bump
