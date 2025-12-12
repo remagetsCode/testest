@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character icon="face" camx="-270">
+<character icon="face" camx="-250" camy="20">
 	<anim name="sad" anim="gf sad"/>
 	<anim name="cheer" anim="GF Cheer"/>
 	<anim name="danceLeft" anim="GF Dancing Beat0" indices="0..14"/>

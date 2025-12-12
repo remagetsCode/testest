@@ -68,7 +68,7 @@ function create() {
 }
 
 function postCreate() {
-    Options.ghostTapping = false;
+    Options.ghostTapping = true;
 
     if (Options.quality != 0){
        add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
@@ -164,10 +164,10 @@ function postUpdate(){
 
     if (fireLight != null) fireLight.iTime = Conductor.songPosition / 1000;
 
-    if (Conductor.curBeat > 128 && Conductor.curBeat < 412 || Conductor.curBeat > 452 && Conductor.curBeat < 706) {
-        if (curCameraTarget == 2) defaultCamZoom = 0.5;
-        else defaultCamZoom = 0.6;
-    }
+    //if (Conductor.curBeat > 128 && Conductor.curBeat < 412 || Conductor.curBeat > 452 && Conductor.curBeat < 706) {
+    //    if (curCameraTarget == 2) defaultCamZoom = 0.5;
+    //    else defaultCamZoom = 0.6;
+    //}
     if ((Conductor.curBeat > 156 && Conductor.curBeat < 411)) {
         freakyTitle();
     }
@@ -184,6 +184,7 @@ function postUpdate(){
             c?.postUpdate(Conductor.songPosition / 1000);
         }
     }
+    noteCam.alpha = 1;
 }
 
 var modulo:Int = 2;
@@ -192,7 +193,13 @@ function beatHit(b:Int) {
 
     switch (b) {
         case 1: for(n in holds) n.camera = noteCam;
-        case 34: canBump = true;
+        case 33: 
+            canBump = true;
+            Options.ghostTapping = false;
+            if(fuckingIntro != null){   //Al usar el chart editor, la cutscene se reproducia y no dejaba ver el gameplay asi que hice esto.
+                remove(fuckingIntro);
+                fuckingIntro.destroy();
+            }
         case 112: allHud(0, 4.5);
 
         case 120: window.title = "Vs Sonic.exe";
@@ -301,8 +308,10 @@ function onSongStart() {
         new FlxTimer().start(21.5, () -> {
             canPause = true;
             FlxTween.tween(fuckingIntro, {alpha: 0}, 0.5, {ease: FlxEase.quartInOut, onComplete: () -> {
-                remove(fuckingIntro);
-                fuckingIntro.destroy();
+                if(fuckingIntro != null){
+                    remove(fuckingIntro);
+                    fuckingIntro.destroy();
+                }
             }});
         });
     }
