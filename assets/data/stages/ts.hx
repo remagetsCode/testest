@@ -184,7 +184,6 @@ function postUpdate(){
             c?.postUpdate(Conductor.songPosition / 1000);
         }
     }
-    noteCam.alpha = 1;
 }
 
 var modulo:Int = 2;
