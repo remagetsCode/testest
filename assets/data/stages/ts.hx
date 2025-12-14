@@ -16,7 +16,7 @@ var noteStatTmr:FlxTimer = new FlxTimer();
 var statTmr:FlxTimer = new FlxTimer();
 
 var miniEvents:Dynamic = Json.parse(Assets.getText(Paths.json('../songs/too-slow/miniEvents')));
-var noteCam:HudCamera;
+
 var extraCam:FlxCamera;
 
 playCutscenes = true;
@@ -70,11 +70,12 @@ function create() {
 function postCreate() {
     Options.ghostTapping = true;
 
-    if (Options.quality != 0){
-       add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
-       fuckingIntro.scale.set(0.7, 0.7);
-       fuckingIntro.camera = extraCam;
-    }
+    
+    //if (Options.quality != 0){
+    //   add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
+    //   fuckingIntro.scale.set(0.7, 0.7);
+    //   fuckingIntro.camera = extraCam;
+    //}
 
     jumpscare = new FlxSprite();
     jumpscare.frames = Paths.getFrames('stages/sonic/jumpscare');
@@ -124,10 +125,10 @@ function postCreate() {
 	alvin.scale.set(0.7, 0.7);
 	alvin.alpha = 0.001;
 
-    for (i in 0...4) {
-        cpu.members[i].camera = noteCam;
-        player.members[i].camera = noteCam;
-    }
+    //for (i in 0...4) {
+    //    cpu.members[i].camera = noteCam;
+    //    player.members[i].camera = noteCam;
+    //}
 
     if (Options.quality != 0) for (uh in [camGame, camHUD, noteCam]) {
         uh.addShader(theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan);
@@ -191,7 +192,9 @@ function beatHit(b:Int) {
     if (b % modulo == 0 && canBump) noteCam.zoom = 1.02;
 
     switch (b) {
-        case 1: for(n in holds) n.camera = noteCam;
+        case 1: 
+            modchart.setPercent("vibrate", 20);
+            for(n in holds) n.camera = noteCam;
         case 33: 
             canBump = true;
             Options.ghostTapping = false;
@@ -333,15 +336,7 @@ function onPlayerHit(e) if (e.noteType == 'Static' || e.noteType == 'StaticAlt')
 
 function allHud(a:Float, t:Float) for (uh in [healthBar, healthBarBG, iconP1, iconP2, accuracyTxt, missesTxt, scoreTxt, noteCam]) FlxTween.tween(uh, {alpha: a}, t, {ease: FlxEase.quartInOut});
 
-function wave() {
-    for (i in 0...4) {
-        cpu.members[i].y = 40;
-        player.members[i].y = 40;
-    }
-
-    for (i in 0...4) {
-        FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
-        FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
+function wave() {    for (i in 0...4) {        cpu.members[i].y = 40;        player.members[i].y = 40;    }    for (i in 0...4) {        FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});       FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
     }
 }
 
