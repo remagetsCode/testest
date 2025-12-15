@@ -7,9 +7,10 @@ playCutscenes = true;
 var tails:FlxSprite;
 var jumpscare:FlxSprite;
 var kadeText:FlxText;
+var ratingShit:FlxText;
 
 function create() {
-    FlxG.save.data.ogTitle = true;
+    enableModchart = true;
     FlxG.sound.play(Paths.sound('jumpscare'), 0);
     FlxG.sound.play(Paths.sound('fakeJumpscare'), 0);
 
@@ -44,16 +45,12 @@ function postCreate() {
     kadeText.camera = camHUD;
     add(kadeText);
 
-    ratingShit = new FlxText(400, healthBar.y + (Options.downscroll ? -60 : 50), 700, 'Score: 0 | Combo Breaks: 0 | Accuracy: 0%').setFormat(null, 14, 0xFFFFFFFF, 'center', FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-    insert(20, ratingShit);
-    ratingShit.camera = camHUD;
+    insert(20, ratingShit = new FlxText(400, healthBar.y + (Options.downscroll ? -60 : 50), 700, 'Score: 0 | Combo Breaks: 0 | Accuracy: 0%').setFormat(null, 14, 0xFFFFFFFF, 'center', FlxTextBorderStyle.OUTLINE, FlxColor.BLACK)).camera = camHUD;
 
     scoreTxt.visible = missesTxt.visible = accuracyTxt.visible = false;
 }
 
 function postUpdate(elapsed:Float) {
-	ratingShit.text = 'Score: '+songScore+' | Combo Breaks: '+misses+' | Accuracy: '+ (FlxMath.roundDecimal(accuracy*100, 2) != -100 ? FlxMath.roundDecimal(accuracy*100, 2) : 0) +'%';
-
     var char = strumLines.members[(curCameraTarget != -1 ? (curCameraTarget != 2 ? curCameraTarget : 1) : 0)].characters[0];
     var animName = char.animation.curAnim.name;
 
@@ -64,6 +61,8 @@ function postUpdate(elapsed:Float) {
         case 'singRIGHT', 'singRIGHT-alt': theFuckingMovement(30, 0);
         default: theFuckingMovement(0, 0);
     }
+
+	ratingShit.text = 'Score: '+songScore+' | Combo Breaks: '+misses+' | Accuracy: '+ (FlxMath.roundDecimal(accuracy*100, 2) != -100 ? FlxMath.roundDecimal(accuracy*100, 2) : 0) +'%';
 }
 
 function beatHit(b:Int) {
@@ -96,10 +95,5 @@ function stepHit(s:Int) {
 }
 
 function onPlayerHit(e) e.note.splash = "squirt";
-
-function destroy() {
-    FlxG.save.data.cached = false;
-    FlxG.save.data.ogTitle = false;
-}
 
 function theFuckingMovement(x:Float, y:Float) camGame.targetOffset.set(x, y);
