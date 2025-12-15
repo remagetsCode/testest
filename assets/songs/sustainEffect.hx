@@ -1,6 +1,9 @@
 var colors:Array = ["Purple", "Blue", "Green", "Red"];
 var generated:Bool = false;
 public var holds:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
+
+
+if (curSong != 'og'){
 function postCreate(){
 	window.title = "Vs Sonic.exe: AIR";
 
@@ -87,4 +90,4 @@ function onPlayerHit(event){
 	if(event.note.nextSustain == null && milk.visible && event.note.isSustainNote) milk.animation.play('end');
 	//if(event.note.nextNote.nextSustain != null) event.showSplash = false;	
 }
-
+}

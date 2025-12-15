@@ -19,3 +19,12 @@ function create() {
 
     uh.play();
 }
+
+function update() {
+    if (controls.ACCEPT) {
+        uh.stop();
+        uh.destroy();
+        FlxG.cameras.remove(uhCam);
+        close();
+    }
+}

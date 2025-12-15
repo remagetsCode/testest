@@ -36,6 +36,8 @@ var ogRand:Int = FlxG.random.int(1, 10);
 var ogCheck:Bool = FlxG.save.data.tooSlow;
 var yaNoHijo:Int = FlxG.random.int(1, 10);
 
+
+
 function create() {
 	window.title = "Vs Sonic.exe: AIR";
 	CoolUtil.playMenuSong();
@@ -152,7 +154,6 @@ function update(elapsed:Float) {
 		        curSelected = i;
 			
 		        if (FlxG.mouse.justPressed) {
-				
 		            clicked = true;
 				
 		            switch (curSelected) {
@@ -168,7 +169,6 @@ function update(elapsed:Float) {
 		                    });
 		            }
 		        }
-			
 		        break;
 		    }
 		}
@@ -213,6 +213,6 @@ function eyesShit() {
     var targetX = centerX + dx - eyes.width/2;
     var targetY = centerY + dy - eyes.height/2;
 
-    eyes.x = FlxMath.lerp(eyes.x, targetX, 0.05);
-    eyes.y = FlxMath.lerp(eyes.y, targetY, 0.05);
+    eyes.x = CoolUtil.fpsLerp(eyes.x, targetX, 0.1);
+    eyes.y = CoolUtil.fpsLerp(eyes.y, targetY, 0.1);
 }

@@ -16,7 +16,7 @@ var noteStatTmr:FlxTimer = new FlxTimer();
 var statTmr:FlxTimer = new FlxTimer();
 
 var miniEvents:Dynamic = Json.parse(Assets.getText(Paths.json('../songs/too-slow/miniEvents')));
-
+var noteCam:HudCamera;
 var extraCam:FlxCamera;
 
 playCutscenes = true;
@@ -39,13 +39,10 @@ if(FlxG.save.data.airMinimal) {
             remove(e);
     }
     function postCreate() {
-        healthBar.visible = false;
-        healthBarBG.visible = false;
-        iconP1.visible = false;
-        iconP2.visible = false;
-        accuracyTxt.visible = false;
-        missesTxt.visible = false;
-        scoreTxt.visible = false;
+        for (e in [healthBar, healthBarBG, iconP1, iconP2, accuracyTxt, missesTxt, scoreTxt]){
+            remove(e);
+            e.destroy();
+        }
     }
 }
 else {
@@ -70,12 +67,11 @@ function create() {
 function postCreate() {
     Options.ghostTapping = true;
 
-    
-    //if (Options.quality != 0){
-    //   add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
-    //   fuckingIntro.scale.set(0.7, 0.7);
-    //   fuckingIntro.camera = extraCam;
-    //}
+    if (Options.quality != 0){
+       add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
+       fuckingIntro.scale.set(0.7, 0.7);
+       fuckingIntro.camera = extraCam;
+    }
 
     jumpscare = new FlxSprite();
     jumpscare.frames = Paths.getFrames('stages/sonic/jumpscare');
@@ -125,10 +121,10 @@ function postCreate() {
 	alvin.scale.set(0.7, 0.7);
 	alvin.alpha = 0.001;
 
-    //for (i in 0...4) {
-    //    cpu.members[i].camera = noteCam;
-    //    player.members[i].camera = noteCam;
-    //}
+    for (i in 0...4) {
+        cpu.members[i].camera = noteCam;
+        player.members[i].camera = noteCam;
+    }
 
     if (Options.quality != 0) for (uh in [camGame, camHUD, noteCam]) {
         uh.addShader(theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan);
@@ -154,13 +150,12 @@ function postUpdate(){
     var char = strumLines.members[(curCameraTarget != -1 ? (curCameraTarget != 2 ? curCameraTarget : 1) : 0)].characters[0];
     var animName = char.animation.curAnim.name;
 
-    if (!animName.contains("sing")) theFuckingMovement(0, 0, 0);
-       
-    if (!animName.contains("miss") && animName.contains("sing")) {
-        if (animName.startsWith("singLEFT")) theFuckingMovement(-25, 0, 0.25);
-        else if (animName.startsWith("singDOWN")) theFuckingMovement(0, 25, 0);
-        else if (animName.startsWith("singUP")) theFuckingMovement(0, -25, 0);
-        else if (animName.startsWith("singRIGHT")) theFuckingMovement(25, 0, -0.25);
+    switch(animName){
+        case 'singLEFT', 'singLEFT-alt': theFuckingMovement(-25, 0, 0.25);
+        case 'singDOWN', 'singDOWN-alt': theFuckingMovement(0, -25, 0);
+        case 'singUP', 'singUP-alt': theFuckingMovement(0, -25, 0);
+        case 'singRIGHT', 'singRIGHT-alt': theFuckingMovement(-25, 0, 0.25);
+        default: theFuckingMovement(0, 0, 0);
     }
 
     if (fireLight != null) fireLight.iTime = Conductor.songPosition / 1000;
@@ -185,6 +180,7 @@ function postUpdate(){
             c?.postUpdate(Conductor.songPosition / 1000);
         }
     }
+    noteCam.alpha = 1;
 }
 
 var modulo:Int = 2;
@@ -192,13 +188,11 @@ function beatHit(b:Int) {
     if (b % modulo == 0 && canBump) noteCam.zoom = 1.02;
 
     switch (b) {
-        case 1: 
-            modchart.setPercent("vibrate", 20);
-            for(n in holds) n.camera = noteCam;
+        case 1: for(n in holds) n.camera = noteCam;
         case 33: 
             canBump = true;
             Options.ghostTapping = false;
-            if(fuckingIntro != null){   //Al usar el chart editor, la cutscene se reproducia y no dejaba ver el gameplay asi que hice esto.
+            if(fuckingIntro != null){
                 remove(fuckingIntro);
                 fuckingIntro.destroy();
             }
@@ -336,7 +330,15 @@ function onPlayerHit(e) if (e.noteType == 'Static' || e.noteType == 'StaticAlt')
 
 function allHud(a:Float, t:Float) for (uh in [healthBar, healthBarBG, iconP1, iconP2, accuracyTxt, missesTxt, scoreTxt, noteCam]) FlxTween.tween(uh, {alpha: a}, t, {ease: FlxEase.quartInOut});
 
-function wave() {    for (i in 0...4) {        cpu.members[i].y = 40;        player.members[i].y = 40;    }    for (i in 0...4) {        FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});       FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
+function wave() {
+    for (i in 0...4) {
+        cpu.members[i].y = 40;
+        player.members[i].y = 40;
+    }
+
+    for (i in 0...4) {
+        FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
+        FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
     }
 }
 
