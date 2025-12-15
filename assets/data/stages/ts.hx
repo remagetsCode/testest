@@ -9,6 +9,7 @@ var backJump:FlxSprite;
 var noteStat:FlxSprite;
 var pollo:FlxSprite;
 var alvin:FlxSprite;
+var vignette:FlxSprite;
 
 var fuckingIntro:FlxVideoSprite;
 
@@ -40,8 +41,7 @@ if(FlxG.save.data.airMinimal) {
     }
     function postCreate() {
         for (e in [healthBar, healthBarBG, iconP1, iconP2, accuracyTxt, missesTxt, scoreTxt]){
-            remove(e);
-            e.destroy();
+            e.alpha = 0;
         }
     }
 }
