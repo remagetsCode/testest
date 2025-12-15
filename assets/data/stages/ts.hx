@@ -197,7 +197,7 @@ function beatHit(b:Int) {
         case 1: for(n in holds) n.camera = noteCam;
         case 33: 
             canBump = true;
-            Options.ghostTapping = false;
+            player.ghostTapping = false;
             if(fuckingIntro != null){
                 remove(fuckingIntro);
                 fuckingIntro.destroy();
@@ -306,7 +306,6 @@ function stepHit(s:Int) {
 }
 
 function onSongEnd() if (FlxG.save.data.tooSlow != true) FlxG.save.data.tooSlow = true;
-function destroy() Options.ghostTapping = true;
 
 function onSongStart() {
     noteCam.flash(0xFF000000, 5);
