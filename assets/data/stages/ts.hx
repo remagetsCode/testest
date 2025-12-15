@@ -65,7 +65,7 @@ function create() {
 }
 
 function postCreate() {
-    Options.ghostTapping = true;
+    player.ghostTapping = true;
 
     if (Options.quality != 0){
        add(fuckingIntro = new FlxVideoSprite(-320, -180)).load(Paths.video('tooSlow'), [':no-audio']);
@@ -120,6 +120,12 @@ function postCreate() {
 	insert(members.indexOf(dad)-1, alvin).camera = camGame;
 	alvin.scale.set(0.7, 0.7);
 	alvin.alpha = 0.001;
+
+    insert(0, vignette = new FlxSprite().loadGraphic(Paths.image("stages/sonic/orangeVign"))).extraCam;
+    vignette.scale.set(0.75,0.75);
+    vignette.updateHitbox();
+    vignette.screenCenter();
+    vignette.alpha = 0;
 
     for (i in 0...4) {
         cpu.members[i].camera = noteCam;
@@ -196,7 +202,7 @@ function beatHit(b:Int) {
                 remove(fuckingIntro);
                 fuckingIntro.destroy();
             }
-        case 112: allHud(0, 4.5);
+        case 115: allHud(0, 4);
 
         case 120: window.title = "Vs Sonic.exe";
         case 121: window.title = "Vs Sonic";
@@ -211,7 +217,8 @@ function beatHit(b:Int) {
         case 157: modulo = 1;
 
         case 252:
-            allHud(0, 4.5);
+            FlxTween.tween(vignette, {alpha: 0.4}, 10);
+            allHud(0, 3.5);
             for (uh in [knux, eggman, tail, tailsHead]) { remove(uh); uh.destroy(); }
             for (uh in [backFire, frontFire]) {
                 FlxTween.tween(uh, {y: uh.y - 500}, 5, {ease: FlxEase.quadInOut});
@@ -220,7 +227,7 @@ function beatHit(b:Int) {
 
             if (Options.quality != 0) for (e in [tailsHeadFire, knuxFire, eggmanFire, tailFire]) e.alpha = 1;
             if (Options.quality != 0) for (e in [camHUD, camGame, noteCam]) e.addShader(fireLight);
-            Options.ghostTapping = true;
+            player.ghostTapping = true;
 
 
 		case 256:
@@ -235,7 +242,7 @@ function beatHit(b:Int) {
 
         case 282: 
             allHud(1, 1);
-            Options.ghostTapping = false;
+            player.ghostTapping = false;
         case 412:
             window.title = "I'm gonna getcha";
             allHud(0, 1.5);
@@ -243,7 +250,9 @@ function beatHit(b:Int) {
         case 434: window.title = "HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA";
         case 445: window.title = "yOu ArE tOO sLoW";
 
-        case 444: allHud(1, 3);
+        case 444: 
+            FlxTween.tween(vignette, {alpha: 0.8}, 3, {type:4});
+            allHud(1, 3);
         case 416:
             FlxTween.cancelTweensOf(noteCam);
             wave();
@@ -263,7 +272,10 @@ function beatHit(b:Int) {
         case 676: for(strum in cpuStrums) strum.scrollSpeed = 10;
 
 		case 706: for (e in [camGame, camHUD, noteCam]) e.shake(0.005, 5);
-        case 708: FlxTween.num(0.005, 0, 5, {onUpdate: (twn) -> rgbShader = twn.value});
+        case 708: 
+            FlxTween.cancelTweensOf(vignette);
+            FlxTween.tween(vignette, {alpha: 0}, 2);
+            FlxTween.num(0.005, 0, 5, {onUpdate: (twn) -> rgbShader = twn.value});
 		case 722: 
             heat1.intensity = 0.0;
             for (cams in [camGame, camHUD, noteCam]) cams.visible = false;
@@ -278,7 +290,7 @@ function stepHit(s:Int) {
     for (e in miniEvents.stat){
         if (s == e){
             stat.alpha = 0.5;
-            FlxG.sound.play(Paths.sound('staticnoise'));
+            FlxG.sound.play(Paths.sound('staticnoise'), 0.8);
             statTmr.start(0.2, () -> stat.alpha = 0);
         }
     }
@@ -320,7 +332,7 @@ function onPlayerMiss(e) {
         health -= 0.2;
         songScore -= 500;
 
-        FlxG.sound.play(Paths.sound('statHit/hitStatic' + FlxG.random.int(1, 2)));
+        FlxG.sound.play(Paths.sound('statHit/hitStatic' + FlxG.random.int(1, 2)), 0.6);
 
         noteStatTmr.start(0.5, () -> noteStat.alpha = 0);
     }
