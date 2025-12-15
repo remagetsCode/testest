@@ -183,7 +183,7 @@ function update(elapsed:Float) {
 }
 
 function storyClicked() {
-	FlxG.sound.play(Paths.sound('muajajajaj'));
+	FlxG.sound.play(Paths.sound('muajajajaj'), 0.6);
 	buttons[0].animation.play('d');
 	sonic.y -= 32;
 	clicked = true;

@@ -121,10 +121,11 @@ function postCreate() {
 	alvin.scale.set(0.7, 0.7);
 	alvin.alpha = 0.001;
 
-    insert(0, vignette = new FlxSprite().loadGraphic(Paths.image("stages/sonic/orangeVign"))).extraCam;
+    insert(0, vignette = new FlxSprite().loadGraphic(Paths.image("stages/sonic/orangeVign")));
     vignette.scale.set(0.75,0.75);
     vignette.updateHitbox();
     vignette.screenCenter();
+    vignette.camera = extraCam;
     vignette.alpha = 0;
 
     for (i in 0...4) {
