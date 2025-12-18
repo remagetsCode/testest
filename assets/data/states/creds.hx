@@ -37,7 +37,7 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 	{name: 'n1ckolasn4me', work: 'Events', icon: '', description: '', link: ''},
 
 	{name: 'Ina The Cat', work: 'Coder', icon: 'Ina', description: '', link: 'https://www.youtube.com/@InaTheCat'},
-	{name: 'Remagets', work: 'Coder', icon: 'rema', description: 'Yeah im too lazy to create an oc', link: 'https://www.youtube.com/@printcodeRem'}
+	{name: 'Remagets', work: 'Coder', icon: 'rema', description: '', link: 'https://www.youtube.com/@printcodeRem'}
 ];
 
 var shit:Array<FlxSprite>=[];
@@ -66,7 +66,7 @@ function create() {
 		if (creds.icon == '') {
 			chiyoIcons.push(i);
 			icon.x -= 18;
-			icon.y -= 70;
+			//icon.y -= 70;
 		}
 
 		add(name);
@@ -76,7 +76,10 @@ function create() {
 
 		shit.push(icon);
 
-		icon.antialiasing = true; FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4});
+		icon.antialiasing = true; 
+		new FlxTimer().start(0.1+i*0.2,()->FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4}));
+		new FlxTimer().start(0.5+i*0.2,()->FlxTween.tween(name, {y: name.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4}));
+		new FlxTimer().start(0.8+i*0.2,()->FlxTween.tween(work, {y: work.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4}));
 	}
 	window.title = "Vs Sonic.exe: AIR - Credits";
 }
@@ -92,20 +95,24 @@ function update(elapsed:Float) {
 	    var icon = shit[i];
 	    var the = chiyoIcons.contains(i) ? 0.8 : 1.0;
 
-	    icon.scale.set(CoolUtil.fpsLerp(icon.scale.x, the, 0.1), CoolUtil.fpsLerp(icon.scale.y, the, 0.1));
+		icon.setGraphicSize(520, 400);
+		icon.updateHitbox();
+		icon.angle = CoolUtil.fpsLerp(icon.angle, 0, 0.1);
+	    //icon.scale.set(CoolUtil.fpsLerp(icon.scale.x, the, 0.1), CoolUtil.fpsLerp(icon.scale.y, the, 0.1));
 
 		icon.color = colorLerp(icon.color, i == curSelected ? 0xFFFFFFFF : 0xFF505050, 0.1);
 	}
 }
 
-function beatHit(b:Int){
-    //for (i in 0...shit.length){
-    //    var icon = shit[i];
-    //    var base = chiyoIcons.contains(i) ? 0.8 : 1.0;
-    //    var bump = base + 0.2;
-//
-    //    icon.scale.set(bump, bump);
-    //}
+function measure(m:Int){
+    for (i in 0...shit.length){
+        var icon = shit[i];
+		icon.angle = m%2==0? 2 : -2;
+        //var base = chiyoIcons.contains(i) ? 0.8 : 1.0;
+        //var bump = base + 0.2;
+
+        //icon.scale.set(bump, bump);
+    }
 }
 
 function colorLerp(from:FlxColor, to:FlxColor, ratio:Float):FlxColor
