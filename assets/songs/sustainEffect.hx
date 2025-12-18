@@ -27,6 +27,15 @@ function postCreate(){
 	generated = true;
 }
 
+function postUpdate() {
+	// This simulates how vslice plays the press animation when theres no note being hit
+	for(i in 0...4){
+		if(Conductor.songPosition - player.members[i].lastHit > 210 && player.members[i].getAnim() == "confirm"){
+			player.members[i].playAnim('pressed', true);
+		}
+	}
+}
+
 function stepHit(){
 	var swap = 0;//modchart.getPercent('opponentSwap', 1);
 	var mode = downscroll ? 87 : -5;

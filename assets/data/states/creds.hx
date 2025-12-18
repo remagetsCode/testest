@@ -25,7 +25,8 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 	{name: 'JustX', work: 'Charter', icon: '', description: '', link: ''},
 	{name: 'Eli', work: 'Charter', icon: 'eli', description: '', link: ''},
 
-	{name: 'Ina The Cat', work: 'Coder', icon: 'Ina', description: '', link: 'https://www.youtube.com/@InaTheCat'}
+	{name: 'Ina The Cat', work: 'Coder', icon: 'Ina', description: '', link: 'https://www.youtube.com/@InaTheCat'},
+	{name: 'Remagets', work: 'Coder', icon: 'rema', description: 'Yeah im too lazy to create an oc', link: 'https://www.youtube.com/@printcodeRem'}
 ];
 
 var shit:Array<FlxSprite>=[];
@@ -42,7 +43,7 @@ function create() {
 	add(bg2 = new FlxBackdrop(Paths.image('menus/credits/trees'), 0x01)).scrollFactor.set(0.02); bg2.x -= 200;
 	new FlxTimer().start(0.05,()->uh=0.1);
 	for (i => creds in credits){
-		var name = new FlxText(150 + (i * 800), 50, 1000, creds.name).setFormat(Paths.font('ArialCEMTBlack.ttf'), 64, 0xFFFFFF00, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000050);
+		var name = new FlxText(150 + (i * 800), 50, 1000, creds.name).setFormat(Paths.font(creds.name == "Remagets" ? 'pixel.otf' : 'ArialCEMTBlack.ttf'), 64, 0xFFFFFF00, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000050);
 		var work = new FlxText(150 + (i * 800), 150, 1000, creds.work).setFormat(Paths.font('ArialCEMTBlack.ttf'), 32, 0xFF555500, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000020);
 		var icon = new FlxSprite(450 + (i * 800), 250).loadGraphic(Paths.image('credits/'+(creds.icon != '' ? creds.icon : 'placeholder')));
 		var description = new FlxText(-350 + (i * 800), 600, 2000, creds.description).setFormat(Paths.font('ArialCEMTBlack.ttf'), 24, 0xFF00AA00, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000000);
@@ -63,6 +64,8 @@ function create() {
 		add(description);
 
 		shit.push(icon);
+
+		if(creds.name == "Remagets") FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4});
 	}
 	window.title = "Vs Sonic.exe: AIR - Credits";
 }
@@ -74,6 +77,7 @@ function update(elapsed:Float) {
 	if (controls.BACK) FlxG.switchState(new MainMenuState());
 	if (controls.ACCEPT && credits[curSelected].link != '') Lib.getURL(new URLRequest((credits[curSelected].link)), "_blank");
 	for (i in 0...shit.length){
+		if(i == shit.length-1) { shit[i].scale.set(5,5); shit[i].updateHitbox(); break;}
 	    var icon = shit[i];
 	    var the = chiyoIcons.contains(i) ? 0.8 : 1.0;
 
