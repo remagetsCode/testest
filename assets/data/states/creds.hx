@@ -11,19 +11,30 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 	{name: 'Fare', work: 'Artist', icon: 'fare', description: '', link: ''},
 	{name: 'Tuffas', work: 'Artist', icon: 'tuffa', description: '', link: 'https://x.com/tuffaestuffa'},
 	{name: 'Sebas1554', work: 'Artist', icon: 'Sebas', description: '', link: 'https://www.youtube.com/@Sebas1554-amonguss'},
-	{name: 'Azure', work: 'Artist', icon: '', description: '', link: ''},
+	{name: 'Azure', work: 'Artist', icon: 'azure', description: '', link: ''},
 	{name: 'Fckalex', work: 'Artist', icon: '', description: '', link: ''},
 	{name: 'GB', work: 'Artist', icon: 'gb', description: '', link: 'https://x.com/WW_MT199?t=TBH8bSRNRrYCLjq02H9sOA&s=09'},
+	{name: 'Ciri', work: 'Artist', icon: 'ciri', description: '', link: ''},
+	{name: 'Bwhoved', work: 'BG Artist', icon: 'bwhoved', description: '', link: ''},
+	{name: 'MrDankBoi', work: 'Animator', icon: '', description: '', link: ''},
+	{name: 'Modnar', work: 'Pixel Artist', icon: '', description: '', link: ''},
 
 	{name: 'Dmbomb', work: 'Musician', icon: 'dmbomb', description: '', link: 'https://www.youtube.com/@Mickydsmcnugget'},
 	{name: 'Zoey', work: 'Musician', icon: 'zoey', description: '', link: 'https://youtube.com/@zoethesigmagrl-d3n'},
 	{name: 'DeadLungs', work: 'Musician', icon: 'deadlungs', description: '', link: 'https://youtube.com/@unaliveoxygen'},
 	{name: 'Rak', work: 'Musician', icon: 'rak', description: '', link: 'https://www.youtube.com/@rakeishon'},
+	{name: 'Alexander', work: 'Musician', icon: '', description: '', link: ''},
+	{name: 'MeDicenKay', work: 'Musician', icon: 'kay', description: '', link: ''},
+	{name: 'Grimmothy', work: 'Musician', icon: '', description: '', link: ''},
+	{name: 'TheSpookyGal', work: 'Musician', icon: '', description: '', link: ''},
+	{name: 'J.Shadows', work: 'Voice Actor', icon: '', description: '', link: ''},
 
 	{name: 'Begi', work: 'Charter', icon: 'begi', description: '', link: 'https://x.com/begi1236524'},
 	{name: 'Baap', work: 'Charter', icon: '', description: '', link: ''},
 	{name: 'JustX', work: 'Charter', icon: '', description: '', link: ''},
-	{name: 'Eli', work: 'Charter', icon: 'eli', description: '', link: ''},
+	{name: 'Cherri', work: 'Charter', icon: 'cherri', description: '', link: ''},
+	{name: 'Pollo Rostizado', work: 'Charter', icon: 'pollo', description: '', link: ''},
+	{name: 'n1ckolasn4me', work: 'Events', icon: '', description: '', link: ''},
 
 	{name: 'Ina The Cat', work: 'Coder', icon: 'Ina', description: '', link: 'https://www.youtube.com/@InaTheCat'},
 	{name: 'Remagets', work: 'Coder', icon: 'rema', description: 'Yeah im too lazy to create an oc', link: 'https://www.youtube.com/@printcodeRem'}
@@ -65,7 +76,7 @@ function create() {
 
 		shit.push(icon);
 
-		if(creds.name == "Remagets") FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4});
+		if(creds.name == "Remagets") { icon.antialiasing = false; FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4});}
 	}
 	window.title = "Vs Sonic.exe: AIR - Credits";
 }
@@ -77,7 +88,7 @@ function update(elapsed:Float) {
 	if (controls.BACK) FlxG.switchState(new MainMenuState());
 	if (controls.ACCEPT && credits[curSelected].link != '') Lib.getURL(new URLRequest((credits[curSelected].link)), "_blank");
 	for (i in 0...shit.length){
-		if(i == shit.length-1) { shit[i].scale.set(5,5); shit[i].updateHitbox(); break;}
+		if(i == shit.length-1) { shit[i].scale.set(5.5,5.5); shit[i].updateHitbox(); break;}
 	    var icon = shit[i];
 	    var the = chiyoIcons.contains(i) ? 0.8 : 1.0;
 
