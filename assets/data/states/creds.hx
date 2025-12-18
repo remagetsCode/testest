@@ -54,7 +54,7 @@ function create() {
 	add(bg2 = new FlxBackdrop(Paths.image('menus/credits/trees'), 0x01)).scrollFactor.set(0.02); bg2.x -= 200;
 	new FlxTimer().start(0.05,()->uh=0.1);
 	for (i => creds in credits){
-		var name = new FlxText(150 + (i * 800), 50, 1000, creds.name).setFormat(Paths.font(creds.name == "Remagets" ? 'pixel.otf' : 'ArialCEMTBlack.ttf'), 64, 0xFFFFFF00, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000050);
+		var name = new FlxText(150 + (i * 800), 50, 1000, creds.name).setFormat(Paths.font('ArialCEMTBlack.ttf'), 64, 0xFFFFFF00, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000050);
 		var work = new FlxText(150 + (i * 800), 150, 1000, creds.work).setFormat(Paths.font('ArialCEMTBlack.ttf'), 32, 0xFF555500, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000020);
 		var icon = new FlxSprite(450 + (i * 800), 250).loadGraphic(Paths.image('credits/'+(creds.icon != '' ? creds.icon : 'placeholder')));
 		var description = new FlxText(-350 + (i * 800), 600, 2000, creds.description).setFormat(Paths.font('ArialCEMTBlack.ttf'), 24, 0xFF00AA00, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000000);
@@ -76,7 +76,7 @@ function create() {
 
 		shit.push(icon);
 
-		if(creds.name == "Remagets") { icon.antialiasing = false; FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4});}
+		icon.antialiasing = true; FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4});
 	}
 	window.title = "Vs Sonic.exe: AIR - Credits";
 }
@@ -99,13 +99,13 @@ function update(elapsed:Float) {
 }
 
 function beatHit(b:Int){
-    for (i in 0...shit.length){
-        var icon = shit[i];
-        var base = chiyoIcons.contains(i) ? 0.8 : 1.0;
-        var bump = base + 0.2;
-
-        icon.scale.set(bump, bump);
-    }
+    //for (i in 0...shit.length){
+    //    var icon = shit[i];
+    //    var base = chiyoIcons.contains(i) ? 0.8 : 1.0;
+    //    var bump = base + 0.2;
+//
+    //    icon.scale.set(bump, bump);
+    //}
 }
 
 function colorLerp(from:FlxColor, to:FlxColor, ratio:Float):FlxColor
