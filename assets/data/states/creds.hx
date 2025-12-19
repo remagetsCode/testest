@@ -17,7 +17,7 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 	{name: 'Ciri', work: 'Artist', icon: 'ciri', description: '', link: ''},
 	{name: 'Bwhoved', work: 'BG Artist', icon: 'bwhoved', description: '', link: ''},
 	{name: 'MrDankBoi', work: 'Animator', icon: '', description: '', link: ''},
-	{name: 'Modnar', work: 'Pixel Artist', icon: '', description: '', link: ''},
+	{name: 'light', work: 'Pixel Artist', icon: '', description: '', link: ''},
 
 	{name: 'Dmbomb', work: 'Musician', icon: 'dmbomb', description: '', link: 'https://www.youtube.com/@Mickydsmcnugget'},
 	{name: 'Zoey', work: 'Musician', icon: 'zoey', description: '', link: 'https://youtube.com/@zoethesigmagrl-d3n'},
