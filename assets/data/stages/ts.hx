@@ -34,18 +34,6 @@ var heat1 = new CustomShader('heatwave1');
 heat1.intensity = 0.0;
 heat1.v_comp = 30.0;
 
-if(FlxG.save.data.airMinimal) {
-    function onStageNodeParsed() {
-        for(e in members) 
-            remove(e);
-    }
-    function postCreate() {
-        for (e in [healthBar, healthBarBG, iconP1, iconP2, accuracyTxt, missesTxt, scoreTxt]){
-            e.alpha = 0;
-        }
-    }
-}
-else {
 function create() {
     introLength = 0.05;
 
@@ -187,7 +175,6 @@ function postUpdate(){
             c?.postUpdate(Conductor.songPosition / 1000);
         }
     }
-    noteCam.alpha = 1;
 }
 
 var modulo:Int = 2;
@@ -381,5 +368,4 @@ function freakyTitle() {
 
 function destroy(){
     FlxG.game.setFilters([]);
-}
 }
