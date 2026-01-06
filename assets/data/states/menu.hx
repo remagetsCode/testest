@@ -1,3 +1,4 @@
+import flixel.text.FlxText.FlxTextBorderStyle;
 import hxvlc.flixel.FlxVideoSprite;
 import flixel.math.FlxMath;
 import funkin.options.OptionsMenu;
@@ -17,6 +18,11 @@ var sonic:FlxSprite;
 var eyes:FlxSprite;
 var guts:FlxSprite;
 
+var honkHitbox:FlxSprite;
+var yUWannaMakeMeCrossEyes:FlxSprite;
+var iWontGonnaDoThat:FlxText;
+var itWillAdvice:Bool = FlxG.random.bool(60);
+
 var story:FlxSprite;
 var options:FlxSprite;
 var credits:FlxSprite;
@@ -30,13 +36,12 @@ var shadCam:FlxCamera = new FlxCamera();
 var topCam:FlxCamera = new FlxCamera();
 var uh:CustomShader = new CustomShader('fuzzShader');
 var vhs:CustomShader = new CustomShader('vhsPause');
+var angleShader:CustomShader = new CustomShader('AngleShader');
 var mh:Float = 0;
 
 var ogRand:Int = FlxG.random.int(1, 10);
 var ogCheck:Bool = FlxG.save.data.tooSlow;
 var yaNoHijo:Int = FlxG.random.int(1, 10);
-
-
 
 function create() {
 	window.title = "Vs Sonic.exe: AIR";
@@ -51,7 +56,7 @@ function create() {
 	}
 
 	FlxG.cameras.add(topCam).bgColor = 0x0;
-	topCam.flash(0xFF000000, 2);
+	// topCam.flash(0xFF000000, 2);
 
 	add(back = new FlxVideoSprite(-320, -180));
 	back.scale.set(0.67, 0.67);
@@ -117,6 +122,14 @@ function create() {
 	add(options = new FlxSprite(950, 440).makeGraphic(309, 120, 0x00FFFFFF));
 	add(credits = new FlxSprite(920, 580).makeGraphic(355, 65, 0x00FFFFFF));
 
+	add(honkHitbox = new FlxSprite(512, 444).makeGraphic(39, 36, 0x00FFFFFF));
+	add(yUWannaMakeMeCrossEyes = new FlxSprite(525, 340).makeGraphic(30, 80, 0x00FFFFFF));
+
+	if (itWillAdvice) add(iWontGonnaDoThat = new FlxText(295, 170, 500, 'No, I wont gonna cross my eyes...').setFormat(Paths.font('menuFont.ttf'), 32, 0xFFFF0000, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000000))/*.shader = angleShader*/;
+	if (itWillAdvice) iWontGonnaDoThat.alpha = 0;
+	// angleShader.pixel = [1, 1];
+	// angleShader.stronk = 0.02;
+
 	for (e in [story, options, credits]) boxes.push(e);
 
 	add(black = new FlxSprite().makeGraphic(1280, 720, 0xFF000000)).alpha = 0;
@@ -136,12 +149,16 @@ function create() {
 }
 
 function update(elapsed:Float) {
-	if (Options.gameplayShaders){
-		mh += elapsed;
-		vhs.iTime = mh / 10;
-	}
+	mh += elapsed;
+	
+	if (Options.gameplayShaders) vhs.iTime = mh / 10;
+
+	// if (iWontGonnaDoThat.alpha != 0) angleShader.iTime = mh / 1000;
 
 	if (!clicked){
+		if (FlxG.mouse.overlaps(honkHitbox) && FlxG.mouse.justPressed) FlxG.sound.play(Paths.sound('honk'), 0.8);
+		if (itWillAdvice) iWontGonnaDoThat.alpha = CoolUtil.fpsLerp(iWontGonnaDoThat.alpha, FlxG.mouse.overlaps(yUWannaMakeMeCrossEyes) ? 0.5 : 0, FlxG.mouse.overlaps(yUWannaMakeMeCrossEyes) ? 0.05 : 0.5);
+
 		eyesShit();
 
 		for (i in 0...buttons.length) buttons[i].animation.play('i');
