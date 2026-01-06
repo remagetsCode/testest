@@ -21,11 +21,7 @@ var guts:FlxSprite;
 var honkHitbox:FlxSprite;
 var yUWannaMakeMeCrossEyes:FlxSprite;
 var iWontGonnaDoThat:FlxText;
-var itWillAdvice:Bool = FlxG.random.bool(60);
-
-var story:FlxSprite;
-var options:FlxSprite;
-var credits:FlxSprite;
+var itWillAdvice:Bool = FlxG.random.bool(40);
 
 var black:FlxSprite;
 
@@ -34,9 +30,7 @@ var curSelected:Int = 0;
 
 var shadCam:FlxCamera = new FlxCamera();
 var topCam:FlxCamera = new FlxCamera();
-var uh:CustomShader = new CustomShader('fuzzShader');
 var vhs:CustomShader = new CustomShader('vhsPause');
-var angleShader:CustomShader = new CustomShader('AngleShader');
 var mh:Float = 0;
 
 var ogRand:Int = FlxG.random.int(1, 10);
@@ -46,29 +40,25 @@ var yaNoHijo:Int = FlxG.random.int(1, 10);
 function create() {
 	window.title = "Vs Sonic.exe: AIR";
 	CoolUtil.playMenuSong();
-	if (yaNoHijo == 1) FlxG.sound.music.volume = 0;
-	else FlxG.sound.music.volume = 1;
+	FlxG.sound.music.volume = yaNoHijo == 1 ? 0 : 1;
 
 	if (Options.gameplayShaders){
 		FlxG.cameras.add(shadCam).bgColor = 0x0;
-		cameras = [shadCam];
+		cameras = shadCam;
 		shadCam.addShader(vhs);
 	}
 
-	FlxG.cameras.add(topCam).bgColor = 0x0;
+	FlxG.cameras.add(topCam).bgColor = 0;
 	// topCam.flash(0xFF000000, 2);
 
-	add(back = new FlxVideoSprite(-320, -180));
+	add(back = new FlxVideoSprite(-320, -180)).load(Paths.video('back'), ['input-repeat=65545']);
+	back.play();
 	back.scale.set(0.67, 0.67);
 	back.updateHitbox();
-	back.load(Paths.video('back'), ['input-repeat=65545']);
-	back.play();
 
-	wall = new FlxSprite(FlxG.width-380);
-	wall.frames = Paths.getFrames('menus/mainmenu/wall');
+	add(wall = new FlxSprite(FlxG.width-380)).frames = Paths.getSparrowAtlas('menus/mainmenu/wall');
 	wall.animation.addByPrefix('wall', 'wall', 12);
 	wall.animation.play('wall');
-	add(wall);
 
 	for (i => shit in ['story', 'freeplay', 'options', 'credits']){
 		var spr = new FlxSprite(950, 0);
@@ -83,54 +73,35 @@ function create() {
 			case'options':spr.y=440;
 			case'credits':spr.y=580; spr.x-=30;
 		}
-		add(spr);
+		add(spr).updateHitbox();
 		if (shit != 'freeplay') buttons.push(spr);
 	}
 
-	sonic = new FlxSprite(250, 120);
-	sonic.frames = Paths.getFrames('menus/mainmenu/sonic');
+	add(sonic = new FlxSprite(250, 120)).frames = Paths.getSparrowAtlas('menus/mainmenu/sonic');
 	sonic.animation.addByPrefix('idle', 'idle');
 	sonic.animation.addByPrefix('accept', 'accept', 24, false);
 	sonic.animation.play('idle');
 	sonic.scale.set(0.4, 0.4);
 	sonic.updateHitbox();
-	add(sonic);
 
-	eyes = new FlxSprite(470, 350);
-	eyes.frames = Paths.getFrames('menus/mainmenu/sonic');
+	add(eyes = new FlxSprite(470, 350)).frames = Paths.getSparrowAtlas('menus/mainmenu/sonic');
 	eyes.animation.addByPrefix('eyes', 'eyes');
 	eyes.animation.play('eyes');
 	eyes.scale.set(0.4, 0.4);
 	eyes.updateHitbox();
-	add(eyes);
 
-	guts = new FlxSprite(840);
-	guts.frames = Paths.getFrames('menus/mainmenu/guts');
+	add(guts = new FlxSprite(840)).frames = Paths.getSparrowAtlas('menus/mainmenu/guts');
 	guts.animation.addByPrefix('guts', 'guts', 12);
 	guts.animation.play('guts');
-	add(guts);
 
-	spikes = new FlxSprite();
-	spikes.frames = Paths.getFrames('menus/mainmenu/spikes');
+	add(spikes = new FlxSprite()).frames = Paths.getSparrowAtlas('menus/mainmenu/spikes');
 	spikes.animation.addByPrefix('spikes', 'spikes', 12);
 	spikes.animation.play('spikes');
-	add(spikes);
-
-	FlxG.mouse.visible = true;
-
-	add(story = new FlxSprite(950, 65).makeGraphic(309, 120, 0x00FFFFFF));
-	add(options = new FlxSprite(950, 440).makeGraphic(309, 120, 0x00FFFFFF));
-	add(credits = new FlxSprite(920, 580).makeGraphic(355, 65, 0x00FFFFFF));
 
 	add(honkHitbox = new FlxSprite(512, 444).makeGraphic(39, 36, 0x00FFFFFF));
 	add(yUWannaMakeMeCrossEyes = new FlxSprite(525, 340).makeGraphic(30, 80, 0x00FFFFFF));
 
-	if (itWillAdvice) add(iWontGonnaDoThat = new FlxText(295, 170, 500, 'No, I wont gonna cross my eyes...').setFormat(Paths.font('menuFont.ttf'), 32, 0xFFFF0000, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000000))/*.shader = angleShader*/;
-	if (itWillAdvice) iWontGonnaDoThat.alpha = 0;
-	// angleShader.pixel = [1, 1];
-	// angleShader.stronk = 0.02;
-
-	for (e in [story, options, credits]) boxes.push(e);
+	if (itWillAdvice) add(iWontGonnaDoThat = new FlxText(295, 170, 500, 'No, I wont gonna cross my eyes...').setFormat(Paths.font('menuFont.ttf'), 32, 0xFFFF0000, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000000)).alpha = 0;
 
 	add(black = new FlxSprite().makeGraphic(1280, 720, 0xFF000000)).alpha = 0;
 	black.camera = topCam;
@@ -143,9 +114,11 @@ function create() {
 		noHijo.bitmap.onEndReached.add(()->{
 			remove(noHijo);
 			noHijo.destroy();
-			FlxTween.num(0, 1, 1, {onUpdate: (v)->FlxG.sound.music.volume = v.value});
+			FlxTween.num(0, 1, 1, {ease: FlxEase.quadInOut}, (v:Float) -> FlxG.sound.music.volume = v);
 		});
 	}	
+
+	FlxG.mouse.visible = true;
 }
 
 function update(elapsed:Float) {
@@ -153,21 +126,18 @@ function update(elapsed:Float) {
 	
 	if (Options.gameplayShaders) vhs.iTime = mh / 10;
 
-	// if (iWontGonnaDoThat.alpha != 0) angleShader.iTime = mh / 1000;
-
 	if (!clicked){
-		if (FlxG.mouse.overlaps(honkHitbox) && FlxG.mouse.justPressed) FlxG.sound.play(Paths.sound('honk'), 0.8);
-		if (itWillAdvice) iWontGonnaDoThat.alpha = CoolUtil.fpsLerp(iWontGonnaDoThat.alpha, FlxG.mouse.overlaps(yUWannaMakeMeCrossEyes) ? 0.5 : 0, FlxG.mouse.overlaps(yUWannaMakeMeCrossEyes) ? 0.05 : 0.5);
+		if (FlxG.mouse.overlaps(honkHitbox) && FlxG.mouse.justPressed) FlxG.sound.play(Paths.sound('honk'), 0.35);
+		if (itWillAdvice) {
+			iWontGonnaDoThat.alpha = CoolUtil.fpsLerp(iWontGonnaDoThat.alpha, FlxG.mouse.overlaps(yUWannaMakeMeCrossEyes) ? 0.5 : 0, FlxG.mouse.overlaps(yUWannaMakeMeCrossEyes) ? 0.05 : 0.5);
+			if (iWontGonnaDoThat.alpha != 0) iWontGonnaDoThat.setPosition(FlxG.random.float(292.5, 297.5), FlxG.random.float(167.5, 172.5));
+		}
 
 		eyesShit();
-
-		for (i in 0...buttons.length) buttons[i].animation.play('i');
-		
 		curSelected = -1;
 		
-		for (i in 0...boxes.length) {
-		    if (FlxG.mouse.overlaps(boxes[i])) {			
-		        buttons[i].animation.play('s');
+		for (i in 0...buttons.length) {
+		    if (FlxG.mouse.overlaps(buttons[i])) {			
 		        curSelected = i;
 			
 		        if (FlxG.mouse.justPressed) {
@@ -186,8 +156,9 @@ function update(elapsed:Float) {
 		                    });
 		            }
 		        }
-		        break;
 		    }
+
+		    if (!clicked) buttons[i].animation.play(i == curSelected ? 's' : 'i');
 		}
 	}
 
@@ -230,6 +201,6 @@ function eyesShit() {
     var targetX = centerX + dx - eyes.width/2;
     var targetY = centerY + dy - eyes.height/2;
 
-    eyes.x = CoolUtil.fpsLerp(eyes.x, targetX, 0.1);
-    eyes.y = CoolUtil.fpsLerp(eyes.y, targetY, 0.1);
+    eyes.x = CoolUtil.fpsLerp(eyes.x, targetX, 0.05);
+    eyes.y = CoolUtil.fpsLerp(eyes.y, targetY, 0.05);
 }

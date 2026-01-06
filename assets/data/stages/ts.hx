@@ -62,7 +62,7 @@ function postCreate() {
     }
 
     jumpscare = new FlxSprite();
-    jumpscare.frames = Paths.getFrames('stages/sonic/jumpscare');
+    jumpscare.frames = Paths.getSparrowAtlas('stages/sonic/jumpscare');
     jumpscare.animation.addByPrefix('jumpscare', 'jumpscare', 24, false);
     jumpscare.animation.play('jumpscare');
     jumpscare.alpha = 0.001;
@@ -70,7 +70,7 @@ function postCreate() {
     add(jumpscare).camera = extraCam;
 
     noteStat = new FlxSprite();
-    noteStat.frames = Paths.getFrames('stages/sonic/special/hitStatic');
+    noteStat.frames = Paths.getSparrowAtlas('stages/sonic/special/hitStatic');
     noteStat.animation.addByPrefix('i', 'idle');
     noteStat.animation.play('i');
     add(noteStat).camera = extraCam;
@@ -87,14 +87,14 @@ function postCreate() {
     simpleJump.alpha = 0;
 
     stat = new FlxSprite(0, (Options.downscroll ? 2.5 : 0));
-    stat.frames = Paths.getFrames('stages/sonic/special/stat');
+    stat.frames = Paths.getSparrowAtlas('stages/sonic/special/stat');
     stat.animation.addByPrefix('i', 'idle');
     stat.animation.play('i');
     add(stat).camera = extraCam;
     stat.alpha = 0;
 
 	pollo = new FlxSprite(100, -280);
-	pollo.frames = Paths.getFrames('stages/sonic/fire/pollo');
+	pollo.frames = Paths.getSparrowAtlas('stages/sonic/fire/pollo');
 	pollo.animation.addByPrefix('idle', 'idle', 20, false);
 	pollo.animation.play('idle');
 	insert(members.indexOf(dad)+1, pollo).camera = camGame;
@@ -102,7 +102,7 @@ function postCreate() {
 	pollo.alpha = 0.001;
 
 	alvin = new FlxSprite(-1100, 150);
-	alvin.frames = Paths.getFrames('stages/sonic/fire/alvin');
+	alvin.frames = Paths.getSparrowAtlas('stages/sonic/fire/alvin');
 	alvin.animation.addByPrefix('idle', 'idle', 20, false);
 	alvin.animation.play('idle');
 	insert(members.indexOf(dad)-1, alvin).camera = camGame;
@@ -147,20 +147,16 @@ function postUpdate(){
 
     switch(animName){
         case 'singLEFT', 'singLEFT-alt': theFuckingMovement(-25, 0, 0.25);
-        case 'singDOWN', 'singDOWN-alt': theFuckingMovement(0, -25, 0);
+        case 'singDOWN', 'singDOWN-alt': theFuckingMovement(0, 25, 0);
         case 'singUP', 'singUP-alt': theFuckingMovement(0, -25, 0);
-        case 'singRIGHT', 'singRIGHT-alt': theFuckingMovement(-25, 0, 0.25);
+        case 'singRIGHT', 'singRIGHT-alt': theFuckingMovement(25, 0, -0.25);
         default: theFuckingMovement(0, 0, 0);
     }
 
     if (fireLight != null) fireLight.iTime = Conductor.songPosition / 1000;
 
-    //if (Conductor.curBeat > 128 && Conductor.curBeat < 412 || Conductor.curBeat > 452 && Conductor.curBeat < 706) {
-    //    if (curCameraTarget == 2) defaultCamZoom = 0.5;
-    //    else defaultCamZoom = 0.6;
-    //}
     if ((Conductor.curBeat > 156 && Conductor.curBeat < 411)) {
-        freakyTitle();
+        window.title = freakyTitle('I am god');
     }
 
     if(Conductor.curBeat > 252) {
@@ -186,10 +182,8 @@ function beatHit(b:Int) {
         case 33: 
             canBump = true;
             player.ghostTapping = false;
-            if(fuckingIntro != null){
-                remove(fuckingIntro);
-                fuckingIntro.destroy();
-            }
+            if(fuckingIntro != null)rmv(fuckingIntro);
+
         case 115: allHud(0, 4);
 
         case 120: window.title = "Vs Sonic.exe";
@@ -207,7 +201,7 @@ function beatHit(b:Int) {
         case 252:
             FlxTween.tween(vignette, {alpha: 0.4}, 10);
             allHud(0, 3.5);
-            for (uh in [knux, eggman, tail, tailsHead]) { remove(uh); uh.destroy(); }
+            for (uh in [knux, eggman, tail, tailsHead]) rmv(uh);
             for (uh in [backFire, frontFire]) {
                 FlxTween.tween(uh, {y: uh.y - 500}, 5, {ease: FlxEase.quadInOut});
                 uh.alpha = 1;
@@ -221,12 +215,12 @@ function beatHit(b:Int) {
 		case 256:
 			pollo.alpha = 1;
 			pollo.animation.play('idle');
-			new FlxTimer().start(3, ()->{remove(pollo); pollo.destroy();});
+			new FlxTimer().start(3, ()->rmv(pollo));
 
 		case 260:
 			alvin.alpha = 1;
 			alvin.animation.play('idle');
-			new FlxTimer().start(3.5, ()->{remove(alvin); alvin.destroy();});
+			new FlxTimer().start(3.5, ()->rmv(alvin));
 
         case 282: 
             allHud(1, 1);
@@ -265,7 +259,7 @@ function beatHit(b:Int) {
             FlxTween.tween(vignette, {alpha: 0}, 2);
             FlxTween.num(0.005, 0, 5, {onUpdate: (twn) -> rgbShader = twn.value});
 		case 722: 
-            heat1.intensity = 0.0;
+            heat1.intensity = 0;
             for (cams in [camGame, camHUD, noteCam]) cams.visible = false;
     }
 }
@@ -287,7 +281,7 @@ function stepHit(s:Int) {
         jumpscare.alpha = 1;
         jumpscare.animation.play('jumpscare');
         FlxG.sound.play(Paths.sound('jumpscare'), 1.1);
-        new FlxTimer().start(3, () -> { remove(jumpscare); jumpscare.destroy(); });
+        new FlxTimer().start(3, () -> rmv(jumpscare));
 
         for (e in [camGame, camHUD, noteCam, extraCam]) e.shake(0.005, 1);
     }
@@ -303,10 +297,7 @@ function onSongStart() {
         new FlxTimer().start(21.5, () -> {
             canPause = true;
             FlxTween.tween(fuckingIntro, {alpha: 0}, 0.5, {ease: FlxEase.quartInOut, onComplete: () -> {
-                if(fuckingIntro != null){
-                    remove(fuckingIntro);
-                    fuckingIntro.destroy();
-                }
+                if(fuckingIntro != null) rmv(fuckingIntro);
             }});
         });
     }
@@ -326,6 +317,8 @@ function onPlayerMiss(e) {
 }
 
 function onPlayerHit(e) if (e.noteType == 'Static' || e.noteType == 'StaticAlt') songScore += 500;
+
+function destroy() FlxG.game.setFilters([]);
 
 function allHud(a:Float, t:Float) for (uh in [healthBar, healthBarBG, iconP1, iconP2, accuracyTxt, missesTxt, scoreTxt, noteCam]) FlxTween.tween(uh, {alpha: a}, t, {ease: FlxEase.quartInOut});
 
@@ -355,17 +348,36 @@ function simpleJumpscare() {
     new FlxTimer().start(0.2, () -> {simpleJump.alpha = 0; backJump.alpha = 0; shittingYourself = false;});
 }
 
-function freakyTitle() {
-    var chars:String = "I am god";
-    
-    var newString:String = "";
-    for (i in 0...chars.length) {
-        var randIndex:Int = FlxG.random.int(0, chars.length - 1);
-        newString += chars.charAt(randIndex);
+function freakyTitle(base:String):String {
+    var chars:Array<String> = base.split('');
+
+    for (i in 0...chars.length){
+        if (FlxG.random.bool(15)){
+            var j:Int = FlxG.random.int(0, chars.length - 1);
+            var tmp:String = chars[i];
+            chars[i] = chars[j];
+            chars[j] = tmp;
+        }
     }
-    window.title = newString;
+
+    for (i in 0...chars.length){
+        var c:String = chars[i];
+
+        if (c == ' ') continue;
+
+        if (FlxG.random.bool(5)) {
+            chars[i] = ' ';
+            continue;
+        }
+
+        if (FlxG.random.bool(35)) chars[i] = c.toUpperCase();
+        else chars[i] = c.toLowerCase();
+    }
+
+    return chars.join('');
 }
 
-function destroy(){
-    FlxG.game.setFilters([]);
+function rmv(spr:FlxSprite) {
+    remove(spr);
+    spr.destroy();
 }

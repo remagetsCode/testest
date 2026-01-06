@@ -1,7 +1,9 @@
-import openfl.Lib;
+import flixel.addons.display.FlxPieDial.FlxPieDialShape;
+import flixel.addons.display.FlxPieDial;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.addons.display.FlxBackdrop;
 import openfl.net.URLRequest;
+import openfl.Lib;
 using StringTools;
 
 var uh:Int = 1;
@@ -41,7 +43,7 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 ];
 
 var shit:Array<FlxSprite>=[];
-var chiyoIcons:Array<Int>=[];
+var credsAmount:Array<FlxPieDial>=[];
 
 var generalCam:FlxCamera = new FlxCamera();
 
@@ -59,14 +61,23 @@ function create() {
 		var icon = new FlxSprite(450 + (i * 800), 250).loadGraphic(Paths.image('credits/'+(creds.icon != '' ? creds.icon : 'placeholder')));
 		var description = new FlxText(-350 + (i * 800), 600, 2000, creds.description).setFormat(Paths.font('ArialCEMTBlack.ttf'), 24, 0xFF00AA00, 'center', FlxTextBorderStyle.OUTLINE, 0xFF000000);
 
-		name.borderSize = 2;
-		work.borderSize = 2;
-		description.borderSize = 2;
+		for (e in [name, work, description]) e.borderSize = 2;
+
+		var rescale:Float = switch(i){
+			case 3, 7, 13, 15: 0.6;
+			case 22: 3;
+			case 26: 6;
+			default: 1;
+		};
+
+		icon.scale.set(rescale,rescale);
+		icon.updateHitbox();
 
 		if (creds.icon == '') {
-			chiyoIcons.push(i);
-			icon.x -= 18;
-			//icon.y -= 70;
+			icon.x += 5;
+
+			icon.scale.set(0.9, 0.9);
+			icon.updateHitbox();
 		}
 
 		add(name);
@@ -77,43 +88,30 @@ function create() {
 		shit.push(icon);
 
 		icon.antialiasing = true; 
-		new FlxTimer().start(0.1+i*0.2,()->FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4}));
-		new FlxTimer().start(0.5+i*0.2,()->FlxTween.tween(name, {y: name.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4}));
-		new FlxTimer().start(0.8+i*0.2,()->FlxTween.tween(work, {y: work.y + 30}, 3, {ease: FlxEase.quadInOut, type: 4}));
+		FlxTween.tween(icon, {y: icon.y + 30}, 3, {ease: FlxEase.quadInOut, startDelay: 0.25 * i, type: 4});
+		FlxTween.tween(name, {y: name.y + 30}, 3, {ease: FlxEase.quadInOut, startDelay: 0.3 * (i + 0.25), type: 4});
+		FlxTween.tween(work, {y: work.y + 30}, 3, {ease: FlxEase.quadInOut, startDelay: 0.35 * (i + 0.75), type: 4});
+
+		// i hated doing ts cuz the color thangs n shii
+		var credAmount:FlxPieDial;
+	
+		add(credAmount = new FlxPieDial(350 + (i * 24), 10, 6, 0xFF505050, 36, FlxPieDialShape.CIRCLE, true, 0)).scrollFactor.set();
+		credsAmount.push(credAmount);
 	}
+
 	window.title = "Vs Sonic.exe: AIR - Credits";
 }
 
 function update(elapsed:Float) {
 	if (curSelected < 0) curSelected = shit.length - 1; else if (curSelected >= shit.length) curSelected = 0;
 	generalCam.scroll.x = CoolUtil.fpsLerp(generalCam.scroll.x, shit[curSelected].x - 440, uh);
-	if (controls.LEFT_P || controls.RIGHT_P) curSelected += (controls.LEFT_P ? -1 : 1);
+	if (controls.LEFT_P || FlxG.mouse.wheel < 0) curSelected--; else if (controls.RIGHT_P || FlxG.mouse.wheel > 0) curSelected++;
 	if (controls.BACK) FlxG.switchState(new MainMenuState());
-	if (controls.ACCEPT && credits[curSelected].link != '') Lib.getURL(new URLRequest((credits[curSelected].link)), "_blank");
-	for (i in 0...shit.length){
-		if(i == shit.length-1) { shit[i].scale.set(5.5,5.5); shit[i].updateHitbox(); break;}
-	    var icon = shit[i];
-	    var the = chiyoIcons.contains(i) ? 0.8 : 1.0;
-
-		icon.setGraphicSize(520, 400);
-		icon.updateHitbox();
-		icon.angle = CoolUtil.fpsLerp(icon.angle, 0, 0.1);
-	    //icon.scale.set(CoolUtil.fpsLerp(icon.scale.x, the, 0.1), CoolUtil.fpsLerp(icon.scale.y, the, 0.1));
-
-		icon.color = colorLerp(icon.color, i == curSelected ? 0xFFFFFFFF : 0xFF505050, 0.1);
+	if (controls.ACCEPT && credits[curSelected].link != '') Lib.getURL(new URLRequest((credits[curSelected].link)), '_blank');
+	for (i in 0...shit.length) {
+		shit[i].color = colorLerp(shit[i].color, i == curSelected ? 0xFFFFFFFF : 0xFF505050, 0.1);
+		credsAmount[i].color = colorLerp(credsAmount[i].color, i == curSelected ? 0xFFFFFFFF : 0xFF505050, 0.1);
 	}
 }
 
-function measure(m:Int){
-    for (i in 0...shit.length){
-        var icon = shit[i];
-		icon.angle = m%2==0? 2 : -2;
-        //var base = chiyoIcons.contains(i) ? 0.8 : 1.0;
-        //var bump = base + 0.2;
-
-        //icon.scale.set(bump, bump);
-    }
-}
-
-function colorLerp(from:FlxColor, to:FlxColor, ratio:Float):FlxColor
-	return FlxColor.interpolate(from, to, FlxMath.bound(ratio * FlxG.elapsed * 60, 0, 1));
+function colorLerp(from:FlxColor, to:FlxColor, ratio:Float):FlxColor return FlxColor.interpolate(from, to, FlxMath.bound(ratio * FlxG.elapsed * 60, 0, 1));
