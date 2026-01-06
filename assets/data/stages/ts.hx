@@ -159,10 +159,10 @@ function postUpdate(){
         window.title = freakyTitle('I am god');
     }
 
-    if(Conductor.curBeat > 252) {
+    if(Conductor.curBeat >= 252) {
         for(c in [bf, dad, gf]) {
             if(c.shader == null){
-                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 80 : 110, 25, 1, c == dad ? 0.05 : 0.1, 37, c==dad?0:10, c==dad?25:20, 5, 2, 1, false, false, false);
+                c = new DropShadow(c, [208.3, 110.69, 61.88], c == dad ? 80 : 110, c == gf ? 40 : 25, 1, c == dad ? 0.05 : 0.1, 37, c==dad?0:10, c==dad?25:20, 5, 2, 1, false, false, false);
                 dropShadowEffects.push(c);
             }
         }
@@ -192,8 +192,7 @@ function beatHit(b:Int) {
         case 123: window.title = "";
  
         case 124:
-            FlxTween.tween(noteCam, {x: -10}, 2, {ease: FlxEase.sineInOut});
-            FlxTween.tween(noteCam, {x: 10}, 2, {ease: FlxEase.sineInOut, type: FlxTween.PINGPONG, startDelay: 2});
+            wave("x");
             allHud(1, 0.5);
 
         case 157: modulo = 1;
@@ -236,8 +235,8 @@ function beatHit(b:Int) {
             FlxTween.tween(vignette, {alpha: 0.8}, 3, {type:4});
             allHud(1, 3);
         case 416:
-            FlxTween.cancelTweensOf(noteCam);
-            wave();
+            wave("x", false);
+            wave("y");
         case 449:
             FlxTween.num(1, 2.5, 2, {onUpdate: (v)->shaderVel = v.value});
             FlxTween.tween(heat1, {intensity: 0.015}, 2);
@@ -322,15 +321,34 @@ function destroy() FlxG.game.setFilters([]);
 
 function allHud(a:Float, t:Float) for (uh in [healthBar, healthBarBG, iconP1, iconP2, accuracyTxt, missesTxt, scoreTxt, noteCam]) FlxTween.tween(uh, {alpha: a}, t, {ease: FlxEase.quartInOut});
 
-function wave() {
-    for (i in 0...4) {
-        cpu.members[i].y = 40;
-        player.members[i].y = 40;
-    }
+function wave(dir:String, ?enable:Bool) {
+    if(dir == null) return;
+    enable ??= true;
 
-    for (i in 0...4) {
-        FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
-        FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
+    if(!enable) {
+        for (i in 0...4) {
+            FlxTween.cancelTweensOf(cpu.members[i]);
+            FlxTween.cancelTweensOf(player.members[i]);
+        }
+        return;
+    }
+    
+    if(dir == "x")
+        for (i in 0...4) {
+            FlxTween.tween(cpu.members[i], {x: cpu.members[i].x-15}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
+            FlxTween.tween(player.members[i], {x: player.members[i].x-15}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
+        }
+
+    else if(dir == "y") {
+        for (i in 0...4) {
+            cpu.members[i].y = 40;
+            player.members[i].y = 40;
+        }
+
+        for (i in 0...4) {
+            FlxTween.tween(cpu.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
+            FlxTween.tween(player.members[i], {y: 60}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
+        }
     }
 }
 

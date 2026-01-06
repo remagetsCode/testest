@@ -27,6 +27,10 @@ function postCreate(){
 	generated = true;
 }
 
+var healthBarValue:Float;
+public var smoothness:Float = 0.1;
+function update() healthBar.percent = healthBarValue = CoolUtil.fpsLerp(healthBarValue, health*50, smoothness);
+
 function postUpdate() {
 	// This simulates how vslice plays the press animation when theres no note being hit
 	for(i in 0...4){
