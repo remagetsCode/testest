@@ -61,56 +61,47 @@ function postCreate() {
        fuckingIntro.camera = extraCam;
     }
 
-    jumpscare = new FlxSprite();
+    add(jumpscare = new FlxSprite()).camera = extraCam;
     jumpscare.frames = Paths.getSparrowAtlas('stages/sonic/jumpscare');
     jumpscare.animation.addByPrefix('jumpscare', 'jumpscare', 24, false);
     jumpscare.animation.play('jumpscare');
     jumpscare.alpha = 0.001;
     jumpscare.screenCenter(0x01);
-    add(jumpscare).camera = extraCam;
 
-    noteStat = new FlxSprite();
+    add(noteStat = new FlxSprite()).camera = extraCam;
     noteStat.frames = Paths.getSparrowAtlas('stages/sonic/special/hitStatic');
     noteStat.animation.addByPrefix('i', 'idle');
     noteStat.animation.play('i');
-    add(noteStat).camera = extraCam;
     noteStat.alpha = 0;
 
     add(backJump = new FlxSprite().makeGraphic(1280*2, 720*2, 0xFF000000)).camera = extraCam;
 	backJump.screenCenter();
     backJump.alpha = 0;
 
-    simpleJump = new FlxSprite().loadGraphic(Paths.image('stages/sonic/special/jsShitMyself'));
-    add(simpleJump).camera = extraCam;
+    add(simpleJump = new FlxSprite().loadGraphic(Paths.image('stages/sonic/special/jsShitMyself'))).camera = extraCam;
     simpleJump.scale.set(0.9, 0.9);
     simpleJump.screenCenter();
     simpleJump.alpha = 0;
 
-    stat = new FlxSprite(0, (Options.downscroll ? 2.5 : 0));
+    add(stat = new FlxSprite(0, Options.downscroll ? 2.5 : 0)).camera = extraCam;
     stat.frames = Paths.getSparrowAtlas('stages/sonic/special/stat');
     stat.animation.addByPrefix('i', 'idle');
     stat.animation.play('i');
-    add(stat).camera = extraCam;
     stat.alpha = 0;
 
-	pollo = new FlxSprite(100, -280);
-	pollo.frames = Paths.getSparrowAtlas('stages/sonic/fire/pollo');
+	insert(members.indexOf(dad)+1, pollo = new FlxSprite(100, -280)).frames = Paths.getSparrowAtlas('stages/sonic/fire/pollo');
 	pollo.animation.addByPrefix('idle', 'idle', 20, false);
 	pollo.animation.play('idle');
-	insert(members.indexOf(dad)+1, pollo).camera = camGame;
 	pollo.scale.set(0.7, 0.7);
 	pollo.alpha = 0.001;
 
-	alvin = new FlxSprite(-1100, 150);
-	alvin.frames = Paths.getSparrowAtlas('stages/sonic/fire/alvin');
+	insert(members.indexOf(dad)-1, alvin = new FlxSprite(-1100, 150)).frames = Paths.getSparrowAtlas('stages/sonic/fire/alvin');
 	alvin.animation.addByPrefix('idle', 'idle', 20, false);
 	alvin.animation.play('idle');
-	insert(members.indexOf(dad)-1, alvin).camera = camGame;
 	alvin.scale.set(0.7, 0.7);
 	alvin.alpha = 0.001;
 
-    insert(0, vignette = new FlxSprite().loadGraphic(Paths.image("stages/sonic/orangeVign")));
-    vignette.scale.set(0.75,0.75);
+    insert(0, vignette = new FlxSprite().loadGraphic(Paths.image('stages/sonic/orangeVign'))).scale.set(0.75,0.75);
     vignette.updateHitbox();
     vignette.screenCenter();
     vignette.camera = extraCam;
@@ -137,12 +128,12 @@ function update(elapsed:Float) {
     theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan.blueOff = [rgbShader, 0];
     theTinyLittleMotherFuckerShaderHolyFuckManTsTuffFrFrMan.greenOff = [-rgbShader, 0];
 	
-	extraCam.scroll.x = (shittingYourself ? FlxG.random.float(-20, 20) : 0);
-	extraCam.scroll.y = (shittingYourself ? FlxG.random.float(-20, 20) : 0);    
+	extraCam.scroll.x = shittingYourself ? FlxG.random.float(-20, 20) : 0;
+	extraCam.scroll.y = shittingYourself ? FlxG.random.float(-20, 20) : 0;    
 }
 
 function postUpdate(){
-    var char = strumLines.members[(curCameraTarget != -1 ? (curCameraTarget != 2 ? curCameraTarget : 1) : 0)].characters[0];
+    var char = strumLines.members[curCameraTarget != -1 ? (curCameraTarget != 2 ? curCameraTarget : 1) : 0].characters[0];
     var animName = char.animation.curAnim.name;
 
     switch(animName){
@@ -186,13 +177,13 @@ function beatHit(b:Int) {
 
         case 115: allHud(0, 4);
 
-        case 120: window.title = "Vs Sonic.exe";
-        case 121: window.title = "Vs Sonic";
-        case 122: window.title = "Vs So";
-        case 123: window.title = "";
+        case 120: window.title = 'Vs Sonic.exe';
+        case 121: window.title = 'Vs Sonic';
+        case 122: window.title = 'Vs So';
+        case 123: window.title = '';
  
         case 124:
-            wave("x");
+            wave('x');
             allHud(1, 0.5);
 
         case 157: modulo = 1;
@@ -227,16 +218,16 @@ function beatHit(b:Int) {
         case 412:
             window.title = "I'm gonna getcha";
             allHud(0, 1.5);
-        case 425: window.title = "I am god";
-        case 434: window.title = "HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA";
-        case 445: window.title = "yOu ArE tOO sLoW";
+        case 425: window.title = 'I am god';
+        case 434: window.title = 'HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA';
+        case 445: window.title = 'yOu ArE tOO sLoW';
 
         case 444: 
             FlxTween.tween(vignette, {alpha: 0.8}, 3, {type:4});
             allHud(1, 3);
         case 416:
-            wave("x", false);
-            wave("y");
+            wave('x', false);
+            wave('y');
         case 449:
             FlxTween.num(1, 2.5, 2, {onUpdate: (v)->shaderVel = v.value});
             FlxTween.tween(heat1, {intensity: 0.015}, 2);
@@ -333,13 +324,13 @@ function wave(dir:String, ?enable:Bool) {
         return;
     }
     
-    if(dir == "x")
+    if(dir == 'x')
         for (i in 0...4) {
             FlxTween.tween(cpu.members[i], {x: cpu.members[i].x-15}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 0.25 * i});
             FlxTween.tween(player.members[i], {x: player.members[i].x-15}, 1, {type: FlxTween.PINGPONG, ease: FlxEase.quadInOut, startDelay: 1.5 + (0.25 * i)});
         }
 
-    else if(dir == "y") {
+    else if(dir == 'y') {
         for (i in 0...4) {
             cpu.members[i].y = 40;
             player.members[i].y = 40;
@@ -360,7 +351,7 @@ function theFuckingMovement(x:Float, y:Float, angle:Float) {
 function simpleJumpscare() {
 	simpleJump.alpha = 1;
     backJump.alpha = 1;
-    FlxG.sound.play(Paths.sound("softjump"), 0.6);
+    FlxG.sound.play(Paths.sound('softjump'), 0.6);
     shittingYourself = true;
 
     new FlxTimer().start(0.2, () -> {simpleJump.alpha = 0; backJump.alpha = 0; shittingYourself = false;});

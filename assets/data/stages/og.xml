@@ -6,9 +6,12 @@
 	<sprite name="knuckle" x="150" y="-350" sprite="knuckle" scale="1.4"/>
 	<sprite name="tail" x="-100" y="-300" sprite="tail" scale="1.4"/>
 	<sprite name="eggman" x="100" y="-350" sprite="eggman" scale="1.4"/>
+	<sprite name="tails" x="-190" sprite="tails" type="loop" scale="1.5">
+		<anim name="idle" loop="true" fps="12"/>
+	</sprite>
 	<girlfriend y="150"/>
 	<dad camxoffset="-100" camyoffset="80"/>
 	<boyfriend camxoffset="100" />
 	<sprite name="grass" x="-500" y="-200" sprite="grass" scale="1.4"/>
-	<combo x="1200"/>
+	<combo x="600"/>
 </stage>
