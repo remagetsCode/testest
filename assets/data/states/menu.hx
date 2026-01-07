@@ -49,7 +49,7 @@ function create() {
 	}
 
 	FlxG.cameras.add(topCam).bgColor = 0;
-	// topCam.flash(0xFF000000, 2);
+	topCam.flash(0xFF000000, 2);
 
 	add(back = new FlxVideoSprite(-320, -180)).load(Paths.video('back'), ['input-repeat=65545']);
 	back.play();
@@ -165,8 +165,7 @@ function update(elapsed:Float) {
 	if (FlxG.keys.justPressed.SEVEN) {
 		persistentUpdate = false;
 		persistentDraw = true;
-		// openSubState(new ModSubState('fakeShit'));
-		openSubState(new EditorPicker());
+		openSubState(new ModSubState('fakeShit'));
 	}
 }
 

@@ -1,8 +1,9 @@
-import openfl.system.Capabilities;
+import flixel.math.FlxPoint;
 import Sys;
 
 var generalCam:FlxCamera = new FlxCamera(0, 0, 1280, 720);
 
+var winPos:FlxPoint = FlxPoint.get();
 var jumpscared:Bool = false;
 var jumpscare:FlxSprite;
 var curSelected:Int = 0;
@@ -21,6 +22,8 @@ var texts:Array<String>=[
 function create() {
 	FlxG.cameras.add(generalCam, false).bgColor = 0;
 	cameras = [generalCam];
+
+	winPos.set(window.x, window.y);
 
 	add(back = new FlxSprite().makeGraphic(1280, 720, 0x80000000));
 
@@ -44,13 +47,11 @@ function create() {
 		icons.push(icon);
 	}
 
-	jumpscare = new FlxSprite();
-	jumpscare.frames = Paths.getFrames('stages/sonic/jumpscare');
+	add(jumpscare = new FlxSprite()).frames = Paths.getSparrowAtlas('stages/sonic/jumpscare');
 	jumpscare.animation.addByPrefix('jumpscare', 'jumpscare', 24, false);
 	jumpscare.animation.play('jumpscare');
-	jumpscare.screenCenter(FlxAxes.X);
+	jumpscare.screenCenter(0x01);
 	jumpscare.alpha = 0.001;
-	add(jumpscare);
 
     FlxG.sound.play(Paths.sound('fakeJumpscare'), 0);
 }
@@ -58,17 +59,16 @@ function create() {
 function update(elapsed:Float) {
 	if (controls.BACK) close();
 
-	for (i in 0...hitboxes.length) if (FlxG.mouse.overlaps(hitboxes[i])) curSelected = i;
-
-
 	for (i in 0...backBoxes.length){
-		backBoxes[i].x = FlxMath.lerp(backBoxes[i].x, (i == curSelected ? 0 : -1280), 0.2);
-		backBoxes[i].alpha = FlxMath.lerp(backBoxes[i].alpha, (i == curSelected ? 1 : 0), 0.1);
+		if (FlxG.mouse.overlaps(hitboxes[i])) curSelected = i;
 
-		icons[i].x = FlxMath.lerp(icons[i].x, (i == curSelected ? 15 : -130), 0.1);
-		icons[i].alpha = FlxMath.lerp(icons[i].alpha, (i == curSelected ? 1 : 0), 0.1);
+		backBoxes[i].x = FlxMath.lerp(backBoxes[i].x, i == curSelected ? 0 : -1280, 0.2);
+		backBoxes[i].alpha = FlxMath.lerp(backBoxes[i].alpha, i == curSelected ? 1 : 0, 0.1);
 
-		moveTxts[i].x = FlxMath.lerp(moveTxts[i].x, (i == curSelected ? 140 : 25), 0.1);
+		icons[i].x = FlxMath.lerp(icons[i].x, i == curSelected ? 15 : -130, 0.1);
+		icons[i].alpha = FlxMath.lerp(icons[i].alpha, i == curSelected ? 1 : 0, 0.1);
+
+		moveTxts[i].x = FlxMath.lerp(moveTxts[i].x, i == curSelected ? 140 : 25, 0.1);
 	}
 
 	if (FlxG.mouse.justPressed && !jumpscared){
@@ -86,7 +86,7 @@ function update(elapsed:Float) {
 	}
 
 	if (jumpscared){
-		window.x = (Capabilities.screenResolutionX / FlxG.width + 50) + FlxG.random.int(-25, 25);
-		window.y = (Capabilities.screenResolutionY / FlxG.height + 20) + FlxG.random.int(-25, 25);
+		window.x = winPos.x + FlxG.random.int(-25, 25);
+		window.y = winPos.y + FlxG.random.int(-30, 30);
 	}
 }
