@@ -14,7 +14,6 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 	{name: 'Tuffas', work: 'Artist', icon: 'tuffa', description: '', link: 'https://x.com/tuffaestuffa'},
 	{name: 'Sebas1554', work: 'Artist', icon: 'Sebas', description: '', link: 'https://www.youtube.com/@Sebas1554-amonguss'},
 	{name: 'Azure', work: 'Artist', icon: 'azure', description: '', link: ''},
-	{name: 'Fckalex', work: 'Artist', icon: '', description: '', link: ''},
 	{name: 'GB', work: 'Artist', icon: 'gb', description: '', link: 'https://x.com/WW_MT199?t=TBH8bSRNRrYCLjq02H9sOA&s=09'},
 	{name: 'Ciri', work: 'Artist', icon: 'ciri', description: '', link: ''},
 	{name: 'Bwhoved', work: 'BG Artist', icon: 'bwhoved', description: '', link: ''},
@@ -23,11 +22,9 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 
 	{name: 'Dmbomb', work: 'Musician', icon: 'dmbomb', description: '', link: 'https://www.youtube.com/@Mickydsmcnugget'},
 	{name: 'Zoey', work: 'Musician', icon: 'zoey', description: '', link: 'https://youtube.com/@zoethesigmagrl-d3n'},
-	{name: 'DeadLungs', work: 'Musician', icon: 'deadlungs', description: '', link: 'https://youtube.com/@unaliveoxygen'},
 	{name: 'Rak', work: 'Musician', icon: 'rak', description: '', link: 'https://www.youtube.com/@rakeishon'},
-	{name: 'Alexander', work: 'Musician', icon: '', description: '', link: ''},
+	{name: 'Toshiapple', work: 'Musician', icon: '', description: '', link: ''},
 	{name: 'MeDicenKay', work: 'Musician', icon: 'kay', description: '', link: ''},
-	{name: 'Grimmothy', work: 'Musician', icon: '', description: '', link: ''},
 	{name: 'TheSpookyGal', work: 'Musician', icon: '', description: '', link: ''},
 	{name: 'J.Shadows', work: 'Voice Actor', icon: '', description: '', link: ''},
 
@@ -63,10 +60,10 @@ function create() {
 
 		for (e in [name, work, description]) e.borderSize = 2;
 
-		var rescale:Float = switch(i){
-			case 3, 7, 13, 15: 0.6;
-			case 22: 3;
-			case 26: 6;
+		var rescale:Float = switch(creds.name){
+			case "Azure", "Bwhoved", "Rak", "MeDicenKay": 0.6;
+			case "Cherri": 3;
+			case "Remagets": 6;
 			default: 1;
 		};
 
