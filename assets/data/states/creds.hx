@@ -24,6 +24,7 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 	{name: 'Zoey', work: 'Musician', icon: 'zoey', description: '', link: 'https://youtube.com/@zoethesigmagrl-d3n'},
 	{name: 'Rak', work: 'Musician', icon: 'rak', description: '', link: 'https://www.youtube.com/@rakeishon'},
 	{name: 'Toshiapple', work: 'Musician', icon: '', description: '', link: ''},
+	{name: 'Tomis13t', work: 'Musician', icon: '', description: '', link: ''},
 	{name: 'MeDicenKay', work: 'Musician', icon: 'kay', description: '', link: ''},
 	{name: 'TheSpookyGal', work: 'Musician', icon: '', description: '', link: ''},
 	{name: 'J.Shadows', work: 'Voice Actor', icon: '', description: '', link: ''},
