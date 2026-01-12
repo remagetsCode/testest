@@ -34,7 +34,7 @@ var vhs:CustomShader = new CustomShader('vhsPause');
 var mh:Float = 0;
 
 var ogRand:Int = FlxG.random.int(1, 10);
-var ogCheck:Bool = FlxG.save.data.tooSlow;
+var ogCheck:Bool = FlxG.save.data.tooSlow && ogRand == 1;
 var yaNoHijo:Int = FlxG.random.int(1, 10);
 
 function create() {
@@ -178,7 +178,7 @@ function storyClicked() {
 	FlxTween.tween(eyes, {alpha: 0}, 0.5, {ease: FlxEase.quartInOut});
 	sonic.animation.play('accept');
 	new FlxTimer().start(3.5, ()->{
-		PlayState.loadSong(FlxG.save.data.tooSlow && ogRand != 1 ? 'too-slow' : 'og', 'hard');
+		PlayState.loadSong(!ogCheck ? 'too-slow' : 'og', 'hard');
 		FlxG.switchState(new PlayState());
 	});
 }

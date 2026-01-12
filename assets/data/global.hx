@@ -17,7 +17,7 @@ function new() {
     chiyoChecker();
     FlxG.save.bind('SonicAir', 'SonicAir');
 
-    if (FlxG.save.data.tooSlow == null) FlxG.save.data.tooSlow = false;
+    FlxG.save.data.tooSlow = false;
     if (FlxG.save.data.ogTitle == null) FlxG.save.data.ogTitle = false;
     if (FlxG.save.data.cached == null) FlxG.save.data.cached = false;
     if (FlxG.save.data.canAdvice == null) FlxG.save.data.canAdvice = true;
