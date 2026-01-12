@@ -30,7 +30,6 @@ var credits:Array<{name:String, work:String, icon:String, description:String, li
 	{name: 'J.Shadows', work: 'Voice Actor', icon: '', description: '', link: ''},
 
 	{name: 'Begi', work: 'Charter', icon: 'begi', description: '', link: 'https://x.com/begi1236524'},
-	{name: 'Baap', work: 'Charter', icon: '', description: '', link: ''},
 	{name: 'JustX', work: 'Charter', icon: '', description: '', link: ''},
 	{name: 'Cherri', work: 'Charter', icon: 'cherri', description: '', link: ''},
 	{name: 'Pollo Rostizado', work: 'Charter', icon: 'pollo', description: '', link: ''},
